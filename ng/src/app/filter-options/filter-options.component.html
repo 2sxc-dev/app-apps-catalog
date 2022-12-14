@@ -1,0 +1,24 @@
+
+<div class="mobile">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Filters
+      </mat-panel-title>
+      <mat-panel-description>
+        selected({{filterService?.selectedFilters?.length || 0}})
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <app-filter-checkboxes [checkboxGroups]="filterCheckboxes" [titlePrefix]="titlePrefix"></app-filter-checkboxes>
+
+    <app-filter-selects [selectGroups]="filterSelects" [titlePrefix]="titlePrefix"></app-filter-selects>
+
+  </mat-expansion-panel>
+</div>
+
+<div class="desktop">
+  <app-filter-checkboxes [checkboxGroups]="filterCheckboxes" [titlePrefix]="titlePrefix"></app-filter-checkboxes>
+
+  <app-filter-selects [selectGroups]="filterSelects" [titlePrefix]="titlePrefix"></app-filter-selects>
+</div>

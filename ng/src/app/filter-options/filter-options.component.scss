@@ -1,0 +1,20 @@
+:host {
+  display: block;
+  margin-bottom: 60px;
+
+  app-filter-checkboxes {
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .mobile { display: none}
+  .desktop { display: block}
+}
+
+
+@media (max-width: 800px) {
+  :host {
+    .mobile { display: block}
+    .desktop { display: none}
+  }
+}

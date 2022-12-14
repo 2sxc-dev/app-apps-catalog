@@ -1,0 +1,24 @@
+
+.mat-card {
+  padding: 100px;
+  margin-bottom: 100px;
+  font-family: inherit;
+
+  .list-item {
+
+    &:not(.first-item) {
+      padding-top: 45px;
+    }
+
+    &:not(.last-item) {
+      padding-bottom: 45px;
+      border-bottom: 1px solid #EFEFEF;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .mat-card {
+    padding: 20px;
+  }
+}

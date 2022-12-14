@@ -1,0 +1,21 @@
+
+<form [formGroup]="checkboxForm">
+  <ng-container *ngFor="let checkboxGroup of checkboxGroups | async">
+
+    <div class="filter-checkbox-container">
+
+      <mat-checkbox [checked]="!areSomeCheckboxesSelected()" [disabled]="!areSomeCheckboxesSelected()" (change)="showAll($event?.checked)">Show all</mat-checkbox>
+
+      <ng-container *ngFor="let option of checkboxGroup?.Options">
+        <ng-container *ngIf="!option">{{option | json}}</ng-container>
+
+        <br>
+        <mat-checkbox [formControlName]="option?.Title" [disabled]="option?.Disabled" (change)="toggelCheckbox(option, $event?.checked)" matTooltip="{{option?.Tooltip}}">
+          {{option?.Tag}}
+        </mat-checkbox>
+      </ng-container>
+
+    </div>
+  </ng-container>
+</form>
+

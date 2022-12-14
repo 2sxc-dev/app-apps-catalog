@@ -1,0 +1,30 @@
+.filter-checkbox-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+
+  ::ng-deep .mat-checkbox {
+    margin-right: 10px;
+
+    .mat-checkbox-label {
+      font-weight: 300;
+    }
+
+    &.mat-checkbox-checked {
+      .mat-checkbox-background {
+        background-color: #414141;
+      }
+    }
+  }
+}
+
+h4 {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .filter-checkbox-container {
+    flex-flow: column;
+  }
+}
