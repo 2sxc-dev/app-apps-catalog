@@ -22,7 +22,11 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatExpansionModule} from '@angular/material/expansion';
 
-const providers: Provider[] = [];
+const providers: Provider[] = [
+  DataService,
+  FilterOptionsService,
+
+];
 
 @NgModule({
   declarations: [
@@ -50,7 +54,7 @@ const providers: Provider[] = [];
 
 
   ],
-  providers: [],
+  providers,
   bootstrap: [AppComponent]
 })
 export class AppModule { }

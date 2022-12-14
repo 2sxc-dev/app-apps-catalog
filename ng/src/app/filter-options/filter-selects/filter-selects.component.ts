@@ -29,11 +29,12 @@ export class FilterSelectsComponent implements OnInit {
   }
 
   handleFilterSelection($event: MatSelectModule) {
-    if ($event.source.selected) {
-      this.filterService.setFilter($event.source.value);
-    } else {
-      this.filterService.removeFilter($event.source.value);
-    }
+    console.log($event)
+    // if ($event.source.selected) {
+    //   this.filterService.setFilter($event.source.value);
+    // } else {
+    //   this.filterService.removeFilter($event.source.value);
+    // }
   }
 
   isSelected(select: FilterOption, option: FilterOption) {

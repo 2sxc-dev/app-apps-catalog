@@ -74,7 +74,7 @@ export class FilterCheckboxesComponent implements OnInit {
       .some(key => this.checkboxForm.get(key).value);
   }
 
-  public showAll() {
+  public showAll(event: any) {
     Object.keys(this.checkboxForm.controls)
       .filter(key => !['all', 'old'].includes(key) )
       .forEach(key => {
