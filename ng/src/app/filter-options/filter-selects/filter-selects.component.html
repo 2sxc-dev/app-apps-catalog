@@ -1,13 +1,18 @@
+<!-- <pre>  {{selectGroups | async | json}}   </pre> -->
+
+<!-- Problem ist, sie werden unten Link angezeigt und dann falsch in das Filtert feld wiedergeben -->
 
 <form [formGroup]="selectForm">
   <div class="filter-select-container">
     <ng-container *ngFor="let selectGroup of selectGroups | async; first as first; last as last;">
+
 
       <div class="filter-select" [ngClass]="{'firstOrLast': first || last}">
 
         <mat-form-field appearance="outline">
           <mat-label>{{(titlePrefix + ' ' + selectGroup?.Category)}}</mat-label>
           <mat-select [formControlName]="selectGroup?.Category" [compareWith]="isSelected">
+
             <mat-option>Show all</mat-option>
 
             <ng-container *ngFor="let option of selectGroup?.Options">

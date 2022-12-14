@@ -8,10 +8,10 @@ import { AppComponent } from './app.component';
 import { AppListComponent } from './app-list/app-list.component';
 import { AppListItemComponent } from './app-list/app-list-item/app-list-item.component';
 import { FilterOptionsComponent } from './filter-options/filter-options.component';
-import { DataService } from './data-service/data.service';
+// import { DataService } from './data-service/data.service';
 import { FilterCheckboxesComponent } from './filter-options/filter-checkboxes/filter-checkboxes.component';
 import { FilterSelectsComponent } from './filter-options/filter-selects/filter-selects.component';
-import { FilterOptionsService } from './filter-options/fiter-options.services';
+// import { FilterOptionsService } from './filter-options/fiter-options.services';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -23,8 +23,8 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatExpansionModule} from '@angular/material/expansion';
 
 const providers: Provider[] = [
-  DataService,
-  FilterOptionsService,
+  // DataService,
+  // FilterOptionsService,
 
 ];
 
@@ -51,8 +51,8 @@ const providers: Provider[] = [
     MatDividerModule,
     MatChipsModule,
     MatExpansionModule,
-
-
+    ContentManagerModule,
+    SxcRootModule
   ],
   providers,
   bootstrap: [AppComponent]

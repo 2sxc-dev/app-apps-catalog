@@ -5,7 +5,8 @@ import { FilterCategoryGroup, FilterOption } from './filter-options.interfaces';
 import { Subject } from 'rxjs';
 import { CheckboxIds } from './filter-options.enums';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
+
 export class FilterOptionsService {
 
   public selectedFilters: FilterOption[] = [];

@@ -2,9 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FilterCategoryGroup, FilterOption } from '../filter-options.interfaces';
 import { FormGroup, FormControl } from '@angular/forms';
-// import { MatOptionSelectionChange } from '@angular/material';
-import {MatSelectModule} from '@angular/material/select';
 import { FilterOptionsService } from '../fiter-options.services';
+import { MatOptionSelectionChange } from '@angular/material/core';
 
 @Component({
   selector: 'app-filter-selects',
@@ -12,6 +11,7 @@ import { FilterOptionsService } from '../fiter-options.services';
   styleUrls: ['./filter-selects.component.scss']
 })
 export class FilterSelectsComponent implements OnInit {
+
 
   @Input() titlePrefix: string = null;
   @Input() selectGroups: Observable<FilterCategoryGroup[]> = null;
@@ -26,18 +26,23 @@ export class FilterSelectsComponent implements OnInit {
         this.selectForm.addControl(group.Category, new FormControl(false));
       });
     });
+    // console.log(this.selectForm)
   }
 
-  handleFilterSelection($event: MatSelectModule) {
-    console.log($event)
-    // if ($event.source.selected) {
-    //   this.filterService.setFilter($event.source.value);
-    // } else {
-    //   this.filterService.removeFilter($event.source.value);
-    // }
+  handleFilterSelection(event: MatOptionSelectionChange) {
+    console.log('event',event)
+    if (event.source.selected) {
+      this.filterService.setFilter(event.source.value);
+    } else {
+      this.filterService.removeFilter(event.source.value);
+    }
   }
 
   isSelected(select: FilterOption, option: FilterOption) {
+    // console.log('select',select)
+    // console.log('selected id',select.Id)
+    // console.log('option',option)
+
     return option && option.Id === select.Id;
   }
 }
