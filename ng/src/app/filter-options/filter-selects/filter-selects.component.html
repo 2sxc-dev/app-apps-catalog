@@ -1,29 +1,28 @@
-<!-- <pre>  {{selectGroups | async | json}}   </pre> -->
 
-<!-- Problem ist, sie werden unten Link angezeigt und dann falsch in das Filtert feld wiedergeben -->
-
-<form [formGroup]="selectForm">
-  <div class="filter-select-container">
-    <ng-container *ngFor="let selectGroup of selectGroups | async; first as first; last as last;">
+<form [formGroup]="selectForm" class="row">
 
 
-      <div class="filter-select" [ngClass]="{'firstOrLast': first || last}">
+      <ng-container  *ngFor="let selectGroup of selectGroups | async; first as first; last as last;">
 
-        <mat-form-field appearance="outline">
-          <mat-label>{{(titlePrefix + ' ' + selectGroup?.Category)}}</mat-label>
-          <mat-select [formControlName]="selectGroup?.Category" [compareWith]="isSelected">
+        <div class=" col-12 col-md-4" [ngClass]="{'firstOrLast': first || last}">
 
-            <mat-option>Show all</mat-option>
+          <mat-form-field appearance="outline" class="w-100" >
+            <mat-label>{{(titlePrefix + ' ' + selectGroup?.Category)}}</mat-label>
+            <mat-select [formControlName]="selectGroup?.Category" [compareWith]="isSelected">
 
-            <ng-container *ngFor="let option of selectGroup?.Options">
-              <mat-option [value]="option" (onSelectionChange)="handleFilterSelection($event)" [disabled]="option?.Disabled">{{option?.Tag}}</mat-option>
-            </ng-container>
+              <mat-option>Show all</mat-option>
 
-          </mat-select>
-        </mat-form-field>
-      </div>
+              <ng-container *ngFor="let option of selectGroup?.Options">
+                <mat-option [value]="option" (onSelectionChange)="handleFilterSelection($event)" [disabled]="option?.Disabled">{{option?.Tag}}</mat-option>
+              </ng-container>
 
-    </ng-container>
-  </div>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+      </ng-container>
+
 </form>
+
+
 
