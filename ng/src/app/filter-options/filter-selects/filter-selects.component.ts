@@ -18,7 +18,7 @@ export class FilterSelectsComponent implements OnInit {
 
   public selectForm: FormGroup = new FormGroup({});
 
-  constructor(private filterService: FilterOptionsService) {}
+  constructor(private filterService: FilterOptionsService) { }
 
   ngOnInit() {
     this.selectGroups.subscribe((groups: FilterCategoryGroup[]) => {
@@ -30,7 +30,7 @@ export class FilterSelectsComponent implements OnInit {
   }
 
   handleFilterSelection(event: MatOptionSelectionChange) {
-    console.log('event',event)
+    console.log('event', event)
     if (event.source.selected) {
       this.filterService.setFilter(event.source.value);
     } else {

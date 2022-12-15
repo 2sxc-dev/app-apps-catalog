@@ -1,84 +1,52 @@
-:host {
-  display: flex;
-  flex-flow: row wrap;
-
-  .app-image {
-    flex: 1 1 100px;
-    max-width: 100px;
-    min-width: 100px;
-    height: 100px;
-
-    margin-right: 30px;
-    margin-bottom: 10px;
-    border-radius: 30px 0 30px 0;
-    overflow: hidden;
-
-    img {
-      width: 100%;
-    }
+.container-fluid{
+  transition: all 225ms ease-in-out;
+  &:not(.item) {
+    border-bottom: 1px solid #efefef;
+  }
+  &:hover {
+    background-color: rgba(128, 128, 128, 0.205);
   }
 
-  .app-description {
-    flex: 7 1 50%;
-    line-height: 1.5;
-    font-weight: 300;
-    max-width: 600px;
-    padding-right: 30px;
+}
 
-    p {
-      margin: 0;
-    }
+img {
+  border-radius: 30px 0 30px 0;
+  min-width: 100px;
+}
 
-    .app-title {
-      a{
-        margin-right: 10px;
-      }
+.type {
+  color: white;
+  border-radius: 8px 0 8px 0;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 400;
+  white-space: nowrap;
+  vertical-align: middle;
 
-      .type {
-        color: white;
-        border-radius: 8px 0 8px 0;
-        padding: 2px 8px;
-        font-size: 12px;
-        font-weight: 400;
-        white-space: nowrap;
-        vertical-align: middle;
-
-        &.new {
-          background: #E9AB00;
-        }
-
-        &.top {
-          background: #E9AB00;
-        }
-
-        &.stable {
-          background: #05D6AC;
-        }
-
-        &.old {
-          background: #673300;
-        }
-      }
-
-    }
+  &.new {
+    background: #e9ab00;
   }
 
-  .app-taggs {
-    flex: 2 1 30%;
-    justify-content: flex-end;
+  &.top {
+    background: #e9ab00;
+  }
 
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      color: #9F9F9F;
-      background: #F1F1EE;
-      font-weight: 400;
-      font-size: 12px;
-      margin: 2px;
-      border-radius: 20px;
-      padding: 3px 10px;
-      white-space: nowrap;
-      height: 20px;
-    }
+  &.stable {
+    background: #05d6ac;
+  }
+
+  &.old {
+    background: #673300;
   }
 }
+
+.tags {
+  color: #9f9f9f !important;
+  background: #f1f1ee !important;
+  border-radius: 20px;
+}
+
+.badge{
+  padding: 6.825px !important;
+}
+

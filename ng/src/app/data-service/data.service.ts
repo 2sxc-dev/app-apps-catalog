@@ -8,7 +8,7 @@ import { shareReplay, Subject } from 'rxjs';
 import { AppListItem, AppListItemTag } from '../app-list/app-list.interfaces';
 
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 
 export class DataService {
 
@@ -26,9 +26,9 @@ export class DataService {
 
   private loadAppsAndTags(): void {
     this.dnnData
-      .query<{Apps: AppListItem[], Tags: Array<AppListItemTag>}>('AppCatalogList')
+      .query<{ Apps: AppListItem[], Tags: Array<AppListItemTag> }>('AppCatalogList')
       .getAll().pipe(shareReplay())
-      .subscribe(({Apps, Tags}) => {
+      .subscribe(({ Apps, Tags }) => {
         this.appList.next(Apps);
         this.tagList.next(Tags);
       });

@@ -1,6 +1,5 @@
 import { SxcAppComponent, Context } from '@2sic.com/sxc-angular';
 import { Component, ElementRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-root',

@@ -20,7 +20,7 @@ export class FilterCheckboxesComponent implements OnInit {
     all: new FormControl(true),
   });
 
-  constructor(public filterService: FilterOptionsService) {}
+  constructor(public filterService: FilterOptionsService) { }
 
   ngOnInit() {
 
@@ -35,12 +35,12 @@ export class FilterCheckboxesComponent implements OnInit {
             CheckboxIds.old,
           ];
 
-          const orderedOptions = checkboxOrderIds.map( (id: number) => group.Options.find((option: FilterOption) => option.Id === id) );
+          const orderedOptions = checkboxOrderIds.map((id: number) => group.Options.find((option: FilterOption) => option.Id === id));
           group.Options = orderedOptions;
           return group;
         })),
         map((groups: FilterCategoryGroup[]) => groups.map((group: FilterCategoryGroup) => {
-          group.Options.map( (option: FilterOption) => {
+          group.Options.map((option: FilterOption) => {
             if (option.Id === CheckboxIds.old) {
               option.Tag = 'Hide all old Apps';
             }
@@ -61,22 +61,22 @@ export class FilterCheckboxesComponent implements OnInit {
         })),
       )
       .subscribe((groups: FilterCategoryGroup[]) => {
-      groups.forEach((group: FilterCategoryGroup) => group.Options.forEach(
-        (option: FilterOption) => {
-          this.checkboxForm.addControl(option.Title, new FormControl(!option.ShowApps));
-      }));
-    });
+        groups.forEach((group: FilterCategoryGroup) => group.Options.forEach(
+          (option: FilterOption) => {
+            this.checkboxForm.addControl(option.Title, new FormControl(!option.ShowApps));
+          }));
+      });
   }
 
   public areSomeCheckboxesSelected() {
     return Object.keys(this.checkboxForm.controls)
-      .filter(key => !['all', 'old'].includes(key) )
+      .filter(key => !['all', 'old'].includes(key))
       .some(key => this.checkboxForm.get(key).value);
   }
 
   public showAll(event: any) {
     Object.keys(this.checkboxForm.controls)
-      .filter(key => !['all', 'old'].includes(key) )
+      .filter(key => !['all', 'old'].includes(key))
       .forEach(key => {
         const filter = this.filterService.selectedFilters.find(f => f.Title === key);
         this.checkboxForm.get(key).setValue(false);

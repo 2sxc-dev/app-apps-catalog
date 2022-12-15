@@ -13,14 +13,14 @@ import { FilterCheckboxesComponent } from './filter-options/filter-checkboxes/fi
 import { FilterSelectsComponent } from './filter-options/filter-selects/filter-selects.component';
 // import { FilterOptionsService } from './filter-options/fiter-options.services';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatSelectModule} from '@angular/material/select';
-import {MatCardModule} from '@angular/material/card';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatChipsModule} from '@angular/material/chips';
-import {MatExpansionModule} from '@angular/material/expansion';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 const providers: Provider[] = [
   // DataService,

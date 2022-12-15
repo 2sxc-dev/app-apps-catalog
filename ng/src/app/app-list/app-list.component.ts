@@ -15,7 +15,7 @@ export class AppListComponent implements OnInit {
 
   public appList: Observable<AppListItem[]> = null;
 
-  constructor(private filterService: FilterOptionsService) {}
+  constructor(private filterService: FilterOptionsService) { }
 
   ngOnInit() {
     this.appList = this.filterService.appListFiltered
@@ -37,7 +37,7 @@ function categorize(apps: AppListItem[]) {
 
   return apps
     .map(app => {
-      app.IsNew = moment().subtract(2, 'month').isSameOrBefore( moment(app.Updated), 'day' );
+      app.IsNew = moment().subtract(2, 'month').isSameOrBefore(moment(app.Updated), 'day');
 
       const hasTop = app.Tags.find(tag => tag.Id === AppTypeIds.top);
       if (!!hasTop) {
@@ -67,12 +67,12 @@ function categorize(apps: AppListItem[]) {
 
 function sortByTypeWeightAndDate(apps: AppListItem[]) {
 
-  return apps.sort( (a, b) => {
+  return apps.sort((a, b) => {
     const aDate = moment(a.Updated);
     const bDate = moment(b.Updated);
     const validDates = !!a.Updated && !!b.Updated;
     const dateWeight = validDates ?
-      ( +(bDate.isAfter(aDate)) || +(bDate.isSame(aDate)) - 1 ) : -1;
+      (+(bDate.isAfter(aDate)) || +(bDate.isSame(aDate)) - 1) : -1;
 
     const aWeight = +(a.IsNew) + a.Type.Weight;
     const bWeight = +(b.IsNew) + b.Type.Weight + dateWeight;
