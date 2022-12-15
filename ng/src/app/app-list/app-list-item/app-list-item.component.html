@@ -1,18 +1,18 @@
 <div class="container-fluid">
 
-  <div class="row mb-3 pt-3 align-items-center w-100 item d-flex flex-wrap">
+  <div class="row mb-1 pt-3 align-items-center w-100 item d-flex flex-wrap justify-content-center mr-2 ml-2">
 
     <!-- Image links -->
-    <div class="col-4 col-md-3 mb-3">
-      <img class="w-100" [src]="app?.Icon">
+    <div class=" col-6 col-sm-4 col-md-2 mb-3">
+      <img class="w-100 w-sm-75" [src]="app?.Icon">
     </div>
 
     <!-- Content mitte -->
-    <div class=" col-8 col-md-6 mb-2">
+    <div class=" col-12 col-sm-8 col-md-6 mb-3">
 
       <h4 class="fs-5 fw-bolder">
-        <a class="text-decoration-none" href="apps/app/{{app?.UrlKey}}">{{app?.Name}}</a>
-        <span class="ms-2 type"
+        <a class="text-decoration-none" routerLink="/details/{{ app.Id }}">{{app?.Name}}</a>
+        <span class="ml-2 type"
           [ngClass]="{'stable': app?.Type?.Id === appTypeIds.stable, 'top': app?.Type?.Id === appTypeIds.top, 'old': app?.Type?.Id === appTypeIds.old}"
           *ngIf="!!app?.Type?.Title">{{app?.Type?.Title}}</span>
         <span class="type new" [ngStyle]="{'margin-left.px': !!app?.Type ? 0 : 10}" *ngIf="app?.IsNew">New</span>
@@ -24,12 +24,12 @@
     <!-- Tags rechts -->
     <div class="col-12 col-md-4  ">
       <ng-container *ngFor="let Tag of app?.Tags">
-        <span class="badge bg-secondary tags mb-1">{{Tag?.Title}}</span>
+        <span class="badge bg-secondary tags mb-2 ml-1">{{Tag?.Title}}</span>
       </ng-container>
     </div>
 
     <!-- streched link -->
-    <a href="apps/app/{{app?.UrlKey}}" class="stretched-link"></a>
+    <a routerLink="/details/{{ app.Id }}" class="stretched-link"></a>
   </div>
 
 </div>

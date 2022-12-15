@@ -24,6 +24,9 @@ export class AppListComponent implements OnInit {
         map((appList: AppListItem[]) => sortByTypeWeightAndDate(appList)),
       );
   }
+
+
+
 }
 
 function categorize(apps: AppListItem[]) {

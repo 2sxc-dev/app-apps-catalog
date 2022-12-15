@@ -1,0 +1,102 @@
+
+<div class="container mb-5 pt-4">
+  <a class="btn btn-primary mb-3 text-white" href="/">Zurück</a>
+
+  <div class="row">
+    <div class="col-8">
+      <!-- HEADLINE -->
+      <h2>{{ app.Title }}</h2>
+
+      <!-- EXTERNAL LINKS -->
+      <div class="mb-4">
+        <a href="{{ app.Download }}" target="_blank" class="btn btn-primary disabled mr-2">Download Latest</a>
+        <a href="{{ app.Github }}" target="_blank" class="btn btn-outline-dark mr-2">GitHub</a>
+        <a href="{{ app.DemoLink }}" target="_blank" class="btn btn-outline-dark mr-2">Live Demo</a>
+        <a href="#" target="_blank" class="btn btn-outline-dark mr-2">Other Releases</a>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="mb-4" [innerHTML]="app.Description"></div>
+
+      <div class="mb-4">
+        <a *ngFor="let detail of app.Tags"
+          class="badge rounded-pill text-bg-secondary mr-2 mb-2 fw-light fs-6 text-decoration-none" href="#"
+          target="_blank">{{ detail.Title }}</a>
+      </div>
+    </div>
+    <div class="col-4">
+      <!-- IMAGE -->
+      <img class="img-border-shadow img-fluid rounded-start" src="https://2sxc.org{{ app.Icon }}" />
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!--App Screenshots-->
+  <div class="mb-4">
+    <h2 class="mb-2">App Screenshots</h2>
+
+    <div class="d-flex w-50 justify-content-center align-items-center flex-row">
+      <div>
+        <img class="w-75" src="https://2sxc.org{{ app.Icon }}" alt="" />
+        <h6 class="mt-2">{{ app.Title }}</h6>
+      </div>
+      <div>
+        <img class="w-75" src="https://2sxc.org{{ app.Icon }}" alt="" />
+        <h6 class="mt-2">{{ app.Title }}</h6>
+      </div>
+      <div>
+        <img class="w-75" src="https://2sxc.org{{ app.Icon }}" alt="" />
+        <h6 class="mt-2">{{ app.Title }}</h6>
+      </div>
+    </div>
+  </div>
+
+
+  <!--Detailed Description-->
+  <div *ngIf="app.DescriptionLong" class="mb-4">
+    <h2>Detailed Description</h2>
+    <div [innerHTML]="app.DescriptionLong"></div>
+  </div>
+
+
+  <!--System Info-->
+  <div>
+    <h2>System Info</h2>
+
+    <div class="card col-5 bg-light mb-4">
+      <div class="card-body">
+        <p class="card-text">
+          v.{{ app.Version }}
+          <br />
+          GUID: {{ app.AppGuid }} <br />
+          for 2sxc {{ app.Min2sxc }}
+        </p>
+      </div>
+    </div>
+
+    <!--Releases End-->
+    <div *ngIf="app.Releases.Title" class="mb-4">
+      <h2>Releases</h2>
+      <ul>
+        <li *ngFor="let release of app.Releases">{{ release.Title }}</li>
+      </ul>
+    </div>
+    <!--Releases End-->
+
+    <div *ngIf="app.History" class="mb-4">
+      <h2>History</h2>
+      <div [innerHTML]="app.History"></div>
+    </div>
+  </div>
+
+  <div>
+    <h2>Created by</h2>
+    <a class="link-primary text-decoration-none" href="https://www.2sic.com/" target="_blank">2sic Internet
+      Solutions</a>
+  </div>
+</div>
+
+<!-- <pre>
+  {{app | json}}
+</pre> -->

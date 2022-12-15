@@ -11,4 +11,10 @@ export class AppListItemComponent {
   public appTypeIds = AppTypeIds;
 
   @Input() app: any = null;
+
+  ngOnInit(){
+
+// console.log(this.app)
+
+  }
 }

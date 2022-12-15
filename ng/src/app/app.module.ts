@@ -21,6 +21,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { DetailsComponent } from './details/details.component';
+import { AppRoutingModule } from './app-routing.module';
 
 const providers: Provider[] = [
   // DataService,
@@ -36,6 +38,7 @@ const providers: Provider[] = [
     FilterOptionsComponent,
     FilterCheckboxesComponent,
     FilterSelectsComponent,
+    DetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,7 +55,8 @@ const providers: Provider[] = [
     MatChipsModule,
     MatExpansionModule,
     ContentManagerModule,
-    SxcRootModule
+    SxcRootModule,
+    AppRoutingModule
   ],
   providers,
   bootstrap: [AppComponent]

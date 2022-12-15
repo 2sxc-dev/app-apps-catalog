@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-// import { Data } from '@2sic.com/dnn-sxc-angular';
-import { SxcAppComponent, Context, SxcApp } from '@2sic.com/sxc-angular';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {  Context, SxcApp } from '@2sic.com/sxc-angular';
+import { HttpClient} from '@angular/common/http';
 
 
-import { shareReplay, Subject } from 'rxjs';
+import { Observable, of, shareReplay, Subject } from 'rxjs';
 import { AppListItem, AppListItemTag } from '../app-list/app-list.interfaces';
 
 
@@ -29,8 +28,18 @@ export class DataService {
       .query<{ Apps: AppListItem[], Tags: Array<AppListItemTag> }>('AppCatalogList')
       .getAll().pipe(shareReplay())
       .subscribe(({ Apps, Tags }) => {
+        // console.log(Tags)
+        // console.log(Apps)
         this.appList.next(Apps);
         this.tagList.next(Tags);
       });
+
   }
+
+  getDetails(id: number):Observable<any> {
+    const apps = this.appList['Apps'].find(h => h.Id === id)
+    return of(apps);
+  }
+
+
 }
