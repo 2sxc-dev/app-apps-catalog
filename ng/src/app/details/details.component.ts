@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data-service/data.service';
 import { ActivatedRoute } from '@angular/router';
-
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-details',
@@ -9,20 +9,33 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit {
-  app!: any // interface noch nötig
+  app$!: Observable<any>;
+  releases$!: Observable<any>;
 
 
   constructor(private dataService: DataService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.getDetails();
-    console.log('detail work')
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+
+  //  this.app$ = this.dataService.getDetails(id).pipe(map(apps =>  apps.App[0]) )
+
+
+
+   this.app$ = this.dataService.getDetails(id).pipe(map(apps =>  console.log( apps.Releases) ))
+
+  //  this.releases$ = this.dataService.getDetails(id).pipe(map(apps =>  console.log( apps.Releases) ))
+
+
+
+
+
+  //  this.app$ = this.dataService.getDetails(id).pipe(map(apps => apps.App[0]) )
+
+
+  //  this.app$.pipe(map(apps => apps.App[0]) )
+
   }
 
-  getDetails(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.dataService.getDetails(id)
-      .subscribe(app => this.app = app);
-  }
 
 }
