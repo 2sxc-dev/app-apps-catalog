@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import {  Context, SxcApp } from '@2sic.com/sxc-angular';
-import { HttpClient} from '@angular/common/http';
+import { SxcApp } from '@2sic.com/sxc-angular';
 
 
 import { Observable, of, shareReplay, Subject } from 'rxjs';
@@ -16,11 +15,11 @@ export class DataService {
   public tagList: Subject<AppListItemTag[]> = new Subject<AppListItemTag[]>();
 
   constructor(
-    private http: HttpClient,
-    private context: Context,
     private dnnData: SxcApp,
   ) {
+
     this.loadAppsAndTags();
+
   }
 
   private loadAppsAndTags(): void {
@@ -28,17 +27,14 @@ export class DataService {
       .query<{ Apps: AppListItem[], Tags: Array<AppListItemTag> }>('AppCatalogList')
       .getAll().pipe(shareReplay())
       .subscribe(({ Apps, Tags }) => {
-        // console.log(Tags)
-        // console.log(Apps)
         this.appList.next(Apps);
         this.tagList.next(Tags);
       });
 
   }
 
-  getDetails(id: number):Observable<any> {
-    const apps = this.appList['Apps'].find(h => h.Id === id)
-    return of(apps);
+  getDetails(id: number): Observable<any> {
+    return this.dnnData.query<any>(`AppWithReleases?id=${id}`).getAll()
   }
 
 

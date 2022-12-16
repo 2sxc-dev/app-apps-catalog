@@ -18,22 +18,12 @@ export class DetailsComponent implements OnInit {
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
-  //  this.app$ = this.dataService.getDetails(id).pipe(map(apps =>  apps.App[0]) )
+   this.app$ = this.dataService.getDetails(id).pipe(map(apps =>  apps.App[0]) )
 
+  this.releases$ = this.dataService.getDetails(id).pipe(map(apps => apps.Releases) )
 
+  //  this.app$ = this.dataService.getDetails(id).pipe(map(apps =>  console.log( apps.Releases) ))
 
-   this.app$ = this.dataService.getDetails(id).pipe(map(apps =>  console.log( apps.Releases) ))
-
-  //  this.releases$ = this.dataService.getDetails(id).pipe(map(apps =>  console.log( apps.Releases) ))
-
-
-
-
-
-  //  this.app$ = this.dataService.getDetails(id).pipe(map(apps => apps.App[0]) )
-
-
-  //  this.app$.pipe(map(apps => apps.App[0]) )
 
   }
 

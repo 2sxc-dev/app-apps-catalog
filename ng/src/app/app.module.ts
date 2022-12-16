@@ -23,6 +23,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { DetailsComponent } from './details/details.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ListComponent } from './list/list.component';
 
 const providers: Provider[] = [
   // DataService,
@@ -39,6 +40,7 @@ const providers: Provider[] = [
     FilterCheckboxesComponent,
     FilterSelectsComponent,
     DetailsComponent,
+    ListComponent,
   ],
   imports: [
     BrowserModule,
