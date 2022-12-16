@@ -1,4 +1,4 @@
-.container-fluid{
+.container {
   transition: all 225ms ease-in-out;
   &:not(.item) {
     border-bottom: 1px solid #efefef;
@@ -50,3 +50,13 @@ img {
   padding: 6.825px !important;
 }
 
+h4{
+  font-weight: 600 !important;
+  font-size: 1.25rem !important;
+}
+
+.short-description{
+  color: black !important;
+  font-size: 0.8rem !important;
+  font-weight: 400 !important;
+}

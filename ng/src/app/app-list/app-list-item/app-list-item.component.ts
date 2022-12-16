@@ -14,7 +14,7 @@ export class AppListItemComponent {
 
   ngOnInit(){
 
-// console.log(this.app)
+console.log(this.app)
 
   }
 }
