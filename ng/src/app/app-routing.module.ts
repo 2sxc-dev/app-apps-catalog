@@ -4,9 +4,8 @@ import { DetailsComponent } from './details/details.component';
 import { ListComponent } from './list/list.component';
 
 const routes: Routes = [
-  { path: '', component: ListComponent },
-  { path: 'details/:id', component: DetailsComponent },
-// /:id = dynamischer link app-catalog/details/ .....
+  // { path: 'details/:id', component: DetailsComponent },
+  { path: '**', component: ListComponent },
 ];
 
 @NgModule({

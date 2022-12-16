@@ -10,7 +10,7 @@
 + Download Link funktioniert nicht 
 + Other Releases verlinken im html
 + Badges verlinken ? 
-+ App List streched Link ? 
+<!-- + App List streched Link ?  -->
 <!-- + Discover more link -->
 
 

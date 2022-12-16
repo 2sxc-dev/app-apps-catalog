@@ -1,10 +1,210 @@
-.img-border-shadow{
+.img-border-shadow {
   box-shadow: 0 3px 30px rgb(0 0 0 / 60%);
-  border-radius: 5px;
+  border-radius: 40px 0 40px 0;
+}
+
+
+.bg-img{
+  background-image: url('https://2sxc.org/Portals/0/2sxc/App-Catalog-Angular/assets/bg-app-detail-logo.png');
+  background-repeat: no-repeat;
+  background-position: center top;
+  padding-top: 36px;
+}
+
+
+.tags {
+  color: #9f9f9f !important;
+  background: #f1f1ee !important;
+  border-radius: 20px;
+}
+
+h2 {
+  font-size: 2rem !important;
+}
+
+h3 {
+  font-size: 1.25rem !important;
+}
+
+.co-content-detail-description {
+  .co-content-detail-description-copy {
+    background-color: #fff;
+    padding: 80px 100px;
+    border-radius: 8px;
+    box-shadow: 0 3px 60px rgba(0, 0, 0, 0.16);
+
+    ol {
+      list-style: none !important;
+      counter-reset: item;
+      margin-bottom: 30px;
+      padding-left: 0;
+      list-style: none;
+
+      li {
+        position: relative;
+        padding: 11px 32px 8px 16px;
+        margin: 0;
+        counter-increment: item;
+        list-style: none inside;
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 8px;
+        line-height: 22px;
+
+        &:nth-child(odd) {
+          background-color: #f1f1ee !important;
+        }
+
+        &:before {
+          display: none !important;
+          content: "" !important;
+        }
+
+        &:after {
+          content: "\f00c";
+          position: absolute;
+          right: 16px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-family: "Font Awesome 5 Pro";
+          color: #d2cfc6;
+        }
+      }
+    }
   }
 
-  .tags {
-    color: #9f9f9f !important;
-    background: #f1f1ee !important;
-    border-radius: 20px;
+  #content ol{
+    list-style: none !important;
+
+    counter-reset: item;
+    margin-bottom: 30px;
+    padding-left: 0
   }
+
+  #content ol li{
+    counter-increment: item;
+    list-style: none inside;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 8px;
+    line-height: 22px;
+  }
+
+
+}
+
+
+.co-content-app-header {
+  h1 {
+    margin-top: 0;
+  }
+
+  .co-content-description {
+    p {
+      margin: 30px 0 15px;
+    }
+  }
+
+  .app-logo {
+    // background-image: url(../assets/bg-app-detail-logo.png);
+    background-repeat: no-repeat;
+    background-position: center top;
+    padding-top: 36px;
+
+    img {
+      border-radius: 40px 0 40px 0;
+      box-shadow: 0 3px 30px rgba(0,0,0,.20);
+    }
+  }
+}
+
+// Detailed Description
+::ng-deep {
+  .co-content-detail-description {
+    .co-content-detail-description-copy {
+      background-color: #fff;
+      padding: 80px 100px;
+      border-radius: 8px;
+      box-shadow: 0 3px 60px rgba(0,0,0,.16);
+
+      ol {
+        list-style: none;
+
+        li {
+          position: relative;
+          padding: 11px 32px 8px 16px;
+          margin: 0;
+
+          &:nth-child(odd) {
+            background-color: #F1F1EE;
+          }
+
+          &:before {
+            display: none !important;
+            content: "" !important;
+          }
+
+          &:after {
+            content: "\f00c";
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: "Font Awesome 5 Pro";
+            color: #D2CFC6;
+          }
+        }
+      }
+    }
+  }
+
+  .co-content-screenshots {
+    .co-content-screenshot {
+      .co-screenshot-thumb {
+        position: relative;
+        background-color: #fff;
+        min-height: 162px;
+        text-align: center;
+        border-radius: 8px;
+        box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+        transition: box-shadow 0.3s ease-in-out;
+
+        img {
+          max-width: 100%;
+          border-radius: 8px;
+        }
+      }
+
+      &:hover, &:focus {
+        .co-screenshot-thumb {
+          box-shadow: 8px 8px 30px rgba(0,0,0,0.3);
+          transition: box-shadow 0.3s ease-in-out;
+
+        }
+      }
+
+      h6 {
+        color: #262626;
+        margin: 20px 0 36px;
+      }
+    }
+  }
+
+  #content .blueimp-gallery {
+    > .next, > .prev, > .close {
+      color: #fff !important;
+    }
+
+    > .indicator {
+      > li {
+        border: none;
+        width: auto;
+        height: auto;
+        margin: 0;
+        background: none;
+        box-shadow: none;
+      }
+    }
+  }
+}
+
