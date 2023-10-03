@@ -3,14 +3,12 @@
   border-radius: 40px 0 40px 0;
 }
 
-
-.bg-img{
-  background-image: url('https://2sxc.org/Portals/0/2sxc/App-Catalog-Angular/assets/bg-app-detail-logo.png');
+.bg-img {
+  background-image: url("https://2sxc.org/Portals/0/2sxc/App-Catalog-Angular/assets/bg-app-detail-logo.png");
   background-repeat: no-repeat;
   background-position: center top;
   padding-top: 36px;
 }
-
 
 .tags {
   color: #9f9f9f !important;
@@ -73,15 +71,15 @@ h3 {
     }
   }
 
-  #content ol{
+  #content ol {
     list-style: none !important;
 
     counter-reset: item;
     margin-bottom: 30px;
-    padding-left: 0
+    padding-left: 0;
   }
 
-  #content ol li{
+  #content ol li {
     counter-increment: item;
     list-style: none inside;
     position: relative;
@@ -89,10 +87,7 @@ h3 {
     margin-bottom: 8px;
     line-height: 22px;
   }
-
-
 }
-
 
 .co-content-app-header {
   h1 {
@@ -113,7 +108,7 @@ h3 {
 
     img {
       border-radius: 40px 0 40px 0;
-      box-shadow: 0 3px 30px rgba(0,0,0,.20);
+      box-shadow: 0 3px 30px rgba(0, 0, 0, 0.2);
     }
   }
 }
@@ -125,7 +120,7 @@ h3 {
       background-color: #fff;
       padding: 80px 100px;
       border-radius: 8px;
-      box-shadow: 0 3px 60px rgba(0,0,0,.16);
+      box-shadow: 0 3px 60px rgba(0, 0, 0, 0.16);
 
       ol {
         list-style: none;
@@ -136,7 +131,7 @@ h3 {
           margin: 0;
 
           &:nth-child(odd) {
-            background-color: #F1F1EE;
+            background-color: #f1f1ee;
           }
 
           &:before {
@@ -151,7 +146,7 @@ h3 {
             top: 50%;
             transform: translateY(-50%);
             font-family: "Font Awesome 5 Pro";
-            color: #D2CFC6;
+            color: #d2cfc6;
           }
         }
       }
@@ -166,7 +161,7 @@ h3 {
         min-height: 162px;
         text-align: center;
         border-radius: 8px;
-        box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
         transition: box-shadow 0.3s ease-in-out;
 
         img {
@@ -175,11 +170,11 @@ h3 {
         }
       }
 
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         .co-screenshot-thumb {
-          box-shadow: 8px 8px 30px rgba(0,0,0,0.3);
+          box-shadow: 8px 8px 30px rgba(0, 0, 0, 0.3);
           transition: box-shadow 0.3s ease-in-out;
-
         }
       }
 
@@ -191,7 +186,9 @@ h3 {
   }
 
   #content .blueimp-gallery {
-    > .next, > .prev, > .close {
+    > .next,
+    > .prev,
+    > .close {
       color: #fff !important;
     }
 
@@ -207,4 +204,3 @@ h3 {
     }
   }
 }
-

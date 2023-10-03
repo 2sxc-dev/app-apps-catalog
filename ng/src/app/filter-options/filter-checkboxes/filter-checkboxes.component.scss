@@ -1,13 +1,15 @@
 .filter-checkbox-container {
-  ::ng-deep .mat-checkbox {
-    .mat-checkbox-label {
-      font-weight: 300;
-    }
-
-    &.mat-checkbox-checked {
-      .mat-checkbox-background {
-        background-color: #414141;
+  ::ng-deep {
+    .mdc-form-field {
+      display: flex;
+      align-items: end;
+      .mdc-label {
+        font-weight: 300;
       }
+    }
+    .mat-mdc-checkbox .mdc-checkbox .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
+      background-color: #414141 !important;
+      border-color: #414141 !important;
     }
   }
 }

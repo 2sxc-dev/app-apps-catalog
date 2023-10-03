@@ -1,4 +1,3 @@
-
 export enum CheckboxIds {
   stabel = 2004,
   template = 1956,
