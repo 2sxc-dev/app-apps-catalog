@@ -7,8 +7,8 @@
       [ngClass]="{ 'last-item': last, 'first-item': first }"
     ></app-list-item>
   </ng-container>
-
-  <ng-container *ngIf="(appList | async)?.length === 0">
-    <p>No Apps for this selection</p>
-  </ng-container>
 </mat-card>
+
+<ng-container *ngIf="(appList | async)?.length === 0">
+  <div class="alert alert-primary" role="alert">No Apps for this selection</div>
+</ng-container>

@@ -10,41 +10,51 @@ import { FilterOptionsService } from "./fiter-options.services";
   styleUrls: ["./filter-options.component.scss"],
 })
 export class FilterOptionsComponent implements OnInit {
-  public titlePrefix = "Filter by";
+ // Define a title prefix for filter labels
+public titlePrefix = "Filter by";
 
-  public filterCheckboxes: Observable<FilterCategoryGroup[]> = null;
-  public filterSelects: Observable<FilterCategoryGroup[]> = null;
+// Observables for filter checkboxes and selects
+public filterCheckboxes: Observable<FilterCategoryGroup[]> = null;
+public filterSelects: Observable<FilterCategoryGroup[]> = null;
 
-  constructor(public filterService: FilterOptionsService) {}
+constructor(public filterService: FilterOptionsService) {}
 
-  ngOnInit() {
-    const checkboxCategorys = ["Release-Type"];
-    this.filterCheckboxes = this.filterService.filterGroups.pipe(
-      map((groups: FilterCategoryGroup[]) =>
-        groups.filter((group) => checkboxCategorys.includes(group.Category))
-      )
-    );
+ngOnInit() {
+  // Categories for checkbox filters
+  const checkboxCategories = ["Release-Type"];
 
-    const selectsCategorys = ["Complexity", "Technology"];
-    const tagCategory = checkboxCategorys.concat(selectsCategorys);
-    this.filterSelects = this.filterService.filterGroups.pipe(
-      map((groups: FilterCategoryGroup[]) => {
-        const categorySelects = groups.filter((group) =>
-          selectsCategorys.includes(group.Category)
+  // Filter checkboxes based on specified categories
+  this.filterCheckboxes = this.filterService.filterGroups.pipe(
+    map((groups: FilterCategoryGroup[]) =>
+      groups.filter((group) => checkboxCategories.includes(group.Category))
+    )
+  );
+
+  // Categories for select filters
+  const selectCategories = ["Complexity", "Technology"];
+  const tagCategory = checkboxCategories.concat(selectCategories);
+
+  // Filter select filters based on specified categories
+  this.filterSelects = this.filterService.filterGroups.pipe(
+    map((groups: FilterCategoryGroup[]) => {
+      const categorySelects = groups.filter((group) =>
+        selectCategories.includes(group.Category)
+      );
+
+      // Create a 'Tag' category with leftover groups
+      const tagSelects = groups
+        .filter((group) => !tagCategory.includes(group.Category))
+        .reduce(
+          (category, group) => {
+            // Append options from leftover groups to the 'Tag' category
+            category.Options = category.Options.concat(group.Options);
+            return category;
+          },
+          { Category: "Tag", Options: [] } as FilterCategoryGroup
         );
-        const tagSelects = groups
-          .filter((group) => !tagCategory.includes(group.Category))
-          .reduce(
-            (category, group) => {
-              // Create a new category 'Tag' with all leftover groups
-              category.Options = category.Options.concat(group.Options);
-              return category;
-            },
-            { Category: "Tag", Options: [] } as FilterCategoryGroup
-          );
 
-        return categorySelects.concat(tagSelects);
-      })
-    );
-  }
+      return categorySelects.concat(tagSelects);
+    })
+  );
+}
 }

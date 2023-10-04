@@ -1,33 +1,46 @@
 import { Injectable } from "@angular/core";
-import { AppListItem, AppListItemTag } from "../app-list/app-list.interfaces";
 import { DataService } from "../data-service/data.service";
 import { FilterCategoryGroup, FilterOption } from "./filter-options.interfaces";
 import { Subject } from "rxjs";
 import { CheckboxIds } from "./filter-options.enums";
+import { AppListItem, AppListItemTag } from "../app-list/app-list.interfaces";
 
 @Injectable({ providedIn: "root" })
 export class FilterOptionsService {
+  // Array to store selected filters
   public selectedFilters: FilterOption[] = [];
 
+  // Array to store tag list
   private tagList: AppListItemTag[] = [];
+
+  // Subject to emit filter groups
   public filterGroups: Subject<FilterCategoryGroup[]> = new Subject<
     FilterCategoryGroup[]
   >();
 
+  // Array to store the list of apps
   private appList: AppListItem[] = [];
+
+  // Subject to emit filtered app list
   public appListFiltered: Subject<AppListItem[]> = new Subject<AppListItem[]>();
 
   constructor(private dataService: DataService) {
+    // Initial selection of filters
     const selectOnInit = [CheckboxIds.old];
 
+    // Subscribe to the appList and tagList observables
     this.dataService.appList.subscribe((appList: AppListItem[]) => {
       this.appList = appList;
       this.filterAppList(appList);
     });
+
     this.dataService.tagList.subscribe((tagList: AppListItemTag[]) => {
       this.tagList = tagList;
+
+      // Create filter groups and set initial filters
       const groups = this.createFilterGroups(tagList, this.appList);
       this.filterGroups.next(groups);
+
       selectOnInit.forEach((selectId) => {
         const select = this.tagList.find((tag) => tag.Id === selectId);
         const option = this.createFilterOption(select);
@@ -36,13 +49,17 @@ export class FilterOptionsService {
     });
   }
 
+  // Function to filter the app list based on selected filters
   public filterAppList(appList: AppListItem[] = this.appList) {
+    // Helper functions to check if an app has certain filters
     const appHasFilter = (app: AppListItem, filter: FilterOption) =>
       app.Tags.some((tag) => filter.Id === tag.Id);
     const appHasSomeFilters = (app: AppListItem, filters: FilterOption[]) =>
       filters.some((filter) => appHasFilter(app, filter));
     const appHasAllFilters = (app: AppListItem, filters: FilterOption[]) =>
       filters.every((filter) => appHasFilter(app, filter));
+
+    // Helper function to split filters into different categories
     const splitFilters = (filters: FilterOption[]) =>
       filters.reduce(
         (obj, filter) => {
@@ -50,7 +67,7 @@ export class FilterOptionsService {
             filter.ShowApps &&
             !Object.values(CheckboxIds).includes(filter.Id)
           ) {
-            obj.showFitlers.push(filter);
+            obj.showFilters.push(filter);
           }
           if (!filter.ShowApps) {
             obj.hideFilters.push(filter);
@@ -63,11 +80,12 @@ export class FilterOptionsService {
           }
           return obj;
         },
-        { showFitlers: [], hideFilters: [], checkboxFilters: [] }
+        { showFilters: [], hideFilters: [], checkboxFilters: [] }
       );
 
+    // Function to filter apps based on selected filters
     const filterApps = (apps: AppListItem[]) => {
-      // If only Filters with ShowApps=false are selected, show the unselected apps
+      // If only filters with ShowApps=false are selected, show the unselected apps
       const showUnselected = this.selectedFilters.every(
         (filter) => !filter.ShowApps
       );
@@ -78,7 +96,7 @@ export class FilterOptionsService {
         );
         return unselectedApps;
       } else {
-        const { showFitlers, hideFilters, checkboxFilters } = splitFilters(
+        const { showFilters, hideFilters, checkboxFilters } = splitFilters(
           this.selectedFilters
         );
 
@@ -92,13 +110,14 @@ export class FilterOptionsService {
               )
             : onlyShowApps;
         const selectedApps = checkboxApps.filter((app) =>
-          appHasAllFilters(app, showFitlers)
+          appHasAllFilters(app, showFilters)
         );
 
         return selectedApps;
       }
     };
 
+    // Apply filters to the app list and emit the filtered app list and filter groups
     const filteredApps =
       this.selectedFilters.length > 0 ? filterApps(appList) : appList;
     const filteredTags =
@@ -110,6 +129,7 @@ export class FilterOptionsService {
     this.appListFiltered.next(filteredApps);
   }
 
+  // Function to create filter groups based on tag list and app list
   private createFilterGroups(
     tagList: Array<AppListItemTag>,
     appList: AppListItem[]
@@ -144,13 +164,23 @@ export class FilterOptionsService {
       new Array<FilterCategoryGroup>()
     );
 
+    // Capitalize the first letter of option titles and sort them alphabetically
     tempGroup.forEach((group) => {
-      // Sort by Title Alphabetically
+      group.Options = group.Options.map((option) => {
+        if (option.Title) {
+          option.Title =
+            option.Title.charAt(0).toUpperCase() + option.Title.slice(1);
+        }
+        return option;
+      });
+
       group.Options.sort((a, b) => a.Title.localeCompare(b.Title));
     });
+
     return tempGroup;
   }
 
+  // Function to create a filter option
   private createFilterOption(tag: AppListItemTag, disabled: boolean = false) {
     const { Id, Tag, Title, Category } = tag;
     let show = true;
@@ -170,6 +200,7 @@ export class FilterOptionsService {
     } as FilterOption;
   }
 
+  // Function to set a filter
   public setFilter(filter: FilterOption) {
     const isAlreadyFiltered = this.selectedFilters.some(
       (selected) => selected.Id === filter.Id
@@ -181,6 +212,7 @@ export class FilterOptionsService {
     }
   }
 
+  // Function to remove a filter
   public removeFilter(filter: FilterOption) {
     const index = this.selectedFilters.findIndex(
       (selected) => selected.Id === filter.Id

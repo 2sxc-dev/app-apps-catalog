@@ -19,7 +19,7 @@ export class FilterCheckboxesComponent implements OnInit {
   @Input() checkboxGroups: Observable<FilterCategoryGroup[]> = new Observable<
     FilterCategoryGroup[]
   >();
-
+  // Definition of the form controlling the checkboxes
   public checkboxForm: FormGroup = new FormGroup({
     all: new FormControl(true),
   });
@@ -27,8 +27,10 @@ export class FilterCheckboxesComponent implements OnInit {
   constructor(public filterService: FilterOptionsService) {}
 
   ngOnInit() {
+    // Fetch the checkbox groups and their options
     this.checkboxGroups
       .pipe(
+        // First transformation: Arrange options in the desired order
         map((groups: FilterCategoryGroup[]) =>
           groups.map((group: FilterCategoryGroup) => {
             const checkboxOrderIds = [
@@ -45,6 +47,7 @@ export class FilterCheckboxesComponent implements OnInit {
             return group;
           })
         ),
+        // Second transformation: Adjust tags and tooltips of options
         map((groups: FilterCategoryGroup[]) =>
           groups.map((group: FilterCategoryGroup) => {
             group.Options.map((option: FilterOption) => {
@@ -69,6 +72,7 @@ export class FilterCheckboxesComponent implements OnInit {
         )
       )
       .subscribe((groups: FilterCategoryGroup[]) => {
+        // Add checkboxes to the form
         groups.forEach((group: FilterCategoryGroup) =>
           group.Options.forEach((option: FilterOption) => {
             this.checkboxForm.addControl(
@@ -80,13 +84,15 @@ export class FilterCheckboxesComponent implements OnInit {
       });
   }
 
+  // Check if some checkboxes are selected
   public areSomeCheckboxesSelected() {
     return Object.keys(this.checkboxForm.controls)
       .filter((key) => !["all", "old"].includes(key))
       .some((key) => this.checkboxForm.get(key).value);
   }
 
-  public showAll(event: any) {
+  // Show all checkboxes
+  public showAll() {
     Object.keys(this.checkboxForm.controls)
       .filter((key) => !["all", "old"].includes(key))
       .forEach((key) => {
@@ -95,12 +101,13 @@ export class FilterCheckboxesComponent implements OnInit {
         );
         this.checkboxForm.get(key).setValue(false);
         if (!!filter) {
-          this.toggelCheckbox(filter, false);
+          this.toggleCheckbox(filter, false);
         }
       });
   }
 
-  public toggelCheckbox(option: FilterOption, state: boolean) {
+  // Toggle checkbox state
+  public toggleCheckbox(option: FilterOption, state: boolean) {
     if (state) {
       this.filterService.setFilter(option);
     } else {

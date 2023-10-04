@@ -30,9 +30,5 @@ export class DetailsComponent implements OnInit {
       map((apps) => apps.Releases),
       tap((releases) => (this.latestVersion = Object.values(releases).pop()))
     );
-
-    // console.log(this.latestVersion)
-
-    //  this.app$ = this.dataService.getDetails(id).pipe(map(apps =>  console.log( apps.Releases) ))
   }
 }
