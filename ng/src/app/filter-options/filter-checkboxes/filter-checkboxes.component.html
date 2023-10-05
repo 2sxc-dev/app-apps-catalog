@@ -1,5 +1,5 @@
 <form [formGroup]="checkboxForm">
-  <ng-container *ngFor="let checkboxGroup of checkboxGroups | async">
+  <ng-container *ngFor="let checkboxGroup of checkboxGroups$ | async">
     <div
       class="d-flex justify-content-between flex-wrap flex-column flex-md-row filter-checkbox-container"
     >
@@ -12,8 +12,8 @@
       <ng-container *ngFor="let option of checkboxGroup?.Options">
         <ng-container *ngIf="!option">{{ option | json }}</ng-container>
         <mat-checkbox
+          [class.disable]="option?.Disabled"
           [formControlName]="option?.Title"
-          [disabled]="option?.Disabled"
           (change)="toggleCheckbox(option, $event?.checked)"
           matTooltip="{{ option?.Tooltip }}"
         >

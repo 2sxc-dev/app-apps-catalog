@@ -16,19 +16,17 @@ import { CheckboxIds } from "../filter-options.enums";
 })
 export class FilterCheckboxesComponent implements OnInit {
   @Input() titlePrefix: string = null;
-  @Input() checkboxGroups: Observable<FilterCategoryGroup[]> = new Observable<
+  @Input() checkboxGroups$: Observable<FilterCategoryGroup[]> = new Observable<
     FilterCategoryGroup[]
   >();
   // Definition of the form controlling the checkboxes
-  public checkboxForm: FormGroup = new FormGroup({
-    all: new FormControl(true),
-  });
+  public checkboxForm: FormGroup = new FormGroup({});
 
   constructor(public filterService: FilterOptionsService) {}
 
   ngOnInit() {
     // Fetch the checkbox groups and their options
-    this.checkboxGroups
+    this.checkboxGroups$
       .pipe(
         // First transformation: Arrange options in the desired order
         map((groups: FilterCategoryGroup[]) =>
@@ -73,6 +71,7 @@ export class FilterCheckboxesComponent implements OnInit {
       )
       .subscribe((groups: FilterCategoryGroup[]) => {
         // Add checkboxes to the form
+
         groups.forEach((group: FilterCategoryGroup) =>
           group.Options.forEach((option: FilterOption) => {
             this.checkboxForm.addControl(
@@ -81,6 +80,7 @@ export class FilterCheckboxesComponent implements OnInit {
             );
           })
         );
+
       });
   }
 
