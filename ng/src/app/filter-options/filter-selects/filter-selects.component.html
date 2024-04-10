@@ -1,25 +1,18 @@
 <form [formGroup]="selectForm" class="row">
   @for (
-    selectGroup of selectGroups$ | async; track
-    selectGroup; let first = $first; let last = $last) {
-    <div class="col-12 col-md-4" [ngClass]="{ firstOrLast: first || last }">
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-label>{{ titlePrefix + " " + selectGroup?.Category }}</mat-label>
-        <mat-select
-          [formControlName]="selectGroup?.Category"
-          [compareWith]="isSelected"
-          >
-          <mat-option>Show all</mat-option>
-          @for (option of selectGroup?.Options; track option) {
-            <mat-option
-              [value]="option"
-              (onSelectionChange)="handleFilterSelection($event)"
-              [disabled]="option?.Disabled"
-              >{{ option?.Title }}</mat-option
-              >
-            }
-          </mat-select>
-        </mat-form-field>
-      </div>
-    }
-  </form>
+  selectGroup of selectGroups$ | async; track
+  selectGroup; let first = $first; let last = $last) {
+  <div class="col-12 col-md-4" [ngClass]="{ firstOrLast: first || last }">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>{{ titlePrefix + " " + selectGroup?.Category }}</mat-label>
+      <mat-select [formControlName]="selectGroup?.Category" [compareWith]="isSelected">
+        <mat-option>Show all</mat-option>
+        @for (option of selectGroup?.Options; track option) {
+        <mat-option [value]="option" (onSelectionChange)="handleFilterSelection($event)"
+          [disabled]="option?.Disabled">{{ option?.Title }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+  }
+</form>

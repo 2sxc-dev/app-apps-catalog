@@ -189,7 +189,6 @@ export class FilterOptionsService {
       show = false;
       disabled = false;
     }
-
     return {
       Id,
       Tag,

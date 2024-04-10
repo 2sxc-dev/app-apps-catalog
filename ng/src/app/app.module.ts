@@ -7,16 +7,16 @@ import { AppRoutingModule } from "./app-routing.module";
 
 const providers: Provider[] = [];
 @NgModule({
-    declarations: [AppComponent],
-    imports: [
-      AppRoutingModule,
-      SxcRootModule,
-      ContentManagerModule,
+  declarations: [AppComponent],
+  imports: [
+    AppRoutingModule,
+    SxcRootModule,
+    ContentManagerModule,
 
-      BrowserAnimationsModule,
-      HttpClientModule,
-    ],
-    providers,
-    bootstrap: [AppComponent],
+    BrowserAnimationsModule,
+    HttpClientModule,
+  ],
+  providers,
+  bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

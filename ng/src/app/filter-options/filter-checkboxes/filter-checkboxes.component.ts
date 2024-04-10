@@ -13,18 +13,18 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { AsyncPipe, JsonPipe } from "@angular/common";
 
 @Component({
-    selector: "app-filter-checkboxes",
-    templateUrl: "./filter-checkboxes.component.html",
-    styleUrls: ["./filter-checkboxes.component.scss"],
-    standalone: true,
-    imports: [
+  selector: "app-filter-checkboxes",
+  templateUrl: "./filter-checkboxes.component.html",
+  styleUrls: ["./filter-checkboxes.component.scss"],
+  standalone: true,
+  imports: [
     FormsModule,
     ReactiveFormsModule,
     MatCheckboxModule,
     MatTooltipModule,
     AsyncPipe,
     JsonPipe
-],
+  ],
 })
 export class FilterCheckboxesComponent implements OnInit {
   @Input() titlePrefix: string = null;
@@ -34,7 +34,7 @@ export class FilterCheckboxesComponent implements OnInit {
   // Definition of the form controlling the checkboxes
   public checkboxForm: FormGroup = new FormGroup({});
 
-  constructor(public filterService: FilterOptionsService) {}
+  constructor(public filterService: FilterOptionsService) { }
 
   ngOnInit() {
     // Fetch the checkbox groups and their options

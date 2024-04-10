@@ -27,6 +27,7 @@ export class DataService {
       });
   }
 
+  // TODO:: Not In Use, Details view is a Razor Page
   getDetails(id: number): Observable<any> {
     return this.dnnData.query<any>(`AppWithReleases?id=${id}`).getAll();
   }

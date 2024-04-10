@@ -1,4 +1,14 @@
-<!-- Mobile  -->
+<!-- Desktop -->
+<div class="d-none d-md-block mb-1">
+  <div class="mb-1">
+    <app-filter-checkboxes [checkboxGroups$]="filterCheckboxes$" [titlePrefix]="titlePrefix"></app-filter-checkboxes>
+  </div>
+  <div>
+    <app-filter-selects [selectGroups$]="filterSelects$" [titlePrefix]="titlePrefix"></app-filter-selects>
+  </div>
+</div>
+
+<!-- Mobil  -->
 <div class="d-block d-md-none mb-3">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
@@ -7,30 +17,11 @@
         selected({{ filterService?.selectedFilters?.length || 0 }})
       </mat-panel-description>
     </mat-expansion-panel-header>
-
-    <app-filter-checkboxes
-      class="mb-2"
-      [checkboxGroups$]="filterCheckboxes"
-      [titlePrefix]="titlePrefix"
-    ></app-filter-checkboxes>
-
-    <app-filter-selects
-      [selectGroups$]="filterSelects"
-      [titlePrefix]="titlePrefix"
-    ></app-filter-selects>
+    <div class="mb-1">
+      <app-filter-checkboxes [checkboxGroups$]="filterCheckboxes$" [titlePrefix]="titlePrefix"></app-filter-checkboxes>
+    </div>
+    <div>
+      <app-filter-selects [selectGroups$]="filterSelects$" [titlePrefix]="titlePrefix"></app-filter-selects>
+    </div>
   </mat-expansion-panel>
-</div>
-
-<!-- desktop -->
-<div class="d-none d-md-block mb-3">
-  <app-filter-checkboxes
-    class="mb-2"
-    [checkboxGroups$]="filterCheckboxes"
-    [titlePrefix]="titlePrefix"
-  ></app-filter-checkboxes>
-
-  <app-filter-selects
-    [selectGroups$]="filterSelects"
-    [titlePrefix]="titlePrefix"
-  ></app-filter-selects>
 </div>

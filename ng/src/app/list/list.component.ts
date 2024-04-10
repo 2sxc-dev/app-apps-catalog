@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FilterOptionsComponent } from '../filter-options/filter-options.component';
 import { AppListComponent } from '../app-list/app-list.component';
 
@@ -9,11 +9,5 @@ import { AppListComponent } from '../app-list/app-list.component';
     standalone: true,
     imports: [FilterOptionsComponent, AppListComponent],
 })
-export class ListComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+export class ListComponent{
 }

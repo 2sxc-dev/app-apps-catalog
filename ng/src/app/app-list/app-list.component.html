@@ -1,12 +1,9 @@
 <mat-card class="p-0 mb-3">
   @for (app of appList | async; track app; let last = $last; let first = $first) {
-    <app-list-item
-      [app]="app"
-      [ngClass]="{ 'last-item': last, 'first-item': first }"
-    ></app-list-item>
+  <app-list-item [app]="app" [ngClass]="{ 'last-item': last, 'first-item': first }"></app-list-item>
   }
 </mat-card>
 
 @if ((appList | async)?.length === 0) {
-  <div class="alert alert-primary" role="alert">No Apps for this selection</div>
+<div class="alert alert-primary" role="alert">No Apps for this selection</div>
 }

@@ -12,6 +12,7 @@ export interface AppListItem {
   IsNew: boolean;
   Icon: string;
   Name: string;
+  ShortDescription: string;
   Description: string;
   Tags: Array<AppListItemTag>;
   UrlKey: string;

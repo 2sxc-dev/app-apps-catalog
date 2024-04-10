@@ -12,11 +12,11 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { NgClass, AsyncPipe } from "@angular/common";
 
 @Component({
-    selector: "app-filter-selects",
-    templateUrl: "./filter-selects.component.html",
-    styleUrls: ["./filter-selects.component.scss"],
-    standalone: true,
-    imports: [
+  selector: "app-filter-selects",
+  templateUrl: "./filter-selects.component.html",
+  styleUrls: ["./filter-selects.component.scss"],
+  standalone: true,
+  imports: [
     FormsModule,
     ReactiveFormsModule,
     NgClass,
@@ -24,7 +24,7 @@ import { NgClass, AsyncPipe } from "@angular/common";
     MatSelectModule,
     MatOptionModule,
     AsyncPipe
-],
+  ],
 })
 export class FilterSelectsComponent implements OnInit {
   @Input() titlePrefix: string = null;
@@ -33,7 +33,7 @@ export class FilterSelectsComponent implements OnInit {
   // Define the form to handle selection
   public selectForm: FormGroup = new FormGroup({});
 
-  constructor(private filterService: FilterOptionsService) {}
+  constructor(private filterService: FilterOptionsService) { }
 
   ngOnInit() {
     // Subscribe to the selectGroups$ observable to fetch filter categories
