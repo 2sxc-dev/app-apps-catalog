@@ -83,24 +83,42 @@ export class AppListComponent implements OnInit {
     });
   }
 
-  // Function to sort apps by type weight and date
+  /**
+   * Sorts the given array of apps first by their type weight (considering IsNew and the weight of their tags)
+   * and then by their last updated date (Updated), with newer dates being preferred.
+   *
+   * @param apps An array of AppListItem objects to be sorted.
+   * @returns The sorted array of apps based on their type weight and last updated date.
+   */
   sortByTypeWeightAndDate(apps: AppListItem[]) {
-    return apps.sort((a, b) => {
-      const aDate = dayjs(a.Updated);
-      const bDate = dayjs(b.Updated);
-      const validDates = !!a.Updated && !!b.Updated;
 
-      // Determine the weight of the dates
-      const dateWeight = validDates
-        ? +bDate.isAfter(aDate) || +bDate.isSame(aDate) - 1
+    // Sort the apps first by their weight, which consists of the sum of IsNew and the weight of their tags,
+    // then by their last updated date, favoring newer dates.
+    return apps.sort((a, b) => {
+      // Convert last updated dates of apps into dayjs objects
+      const firstAppUpdatedDate = dayjs(a.Updated);
+      const secondAppUpdatedDate = dayjs(b.Updated);
+
+      // Check if both apps have valid last updated dates
+      const validDatesExist = !!a.Updated && !!b.Updated;
+
+      // Calculate the weight of the dates based on their comparison.
+      // If validDatesExist is true, compare the last updated dates of apps a and b
+      // and assign a weight to the comparison result. If validDatesExist is false,
+      // set a default weight of -1 to indicate that the dates are not valid.
+      const dateWeight = validDatesExist
+        ? +secondAppUpdatedDate.isAfter(firstAppUpdatedDate) || +secondAppUpdatedDate.isSame(firstAppUpdatedDate) - 1
         : -1;
 
-      // Calculate the weight of each app
-      const aWeight = +a.IsNew + a.Type.Weight;
-      const bWeight = +b.IsNew + b.Type.Weight + dateWeight;
+      // Calculate the weight of each app based on its properties and the date weight.
+      // The weight consists of the sum of the 'IsNew' property and the 'Weight' property of the app's type.
+      // For app 'b', the date weight is also included in the calculation.
+      const firstAppWeight = +a.IsNew + a.Type.Weight; // From Tag
+      const secondAppWeight = +b.IsNew + b.Type.Weight /** From Tag*/ + dateWeight // Calculate the weight of the second app based on its properties and the date weight;
 
-      // Sort apps in descending order of weight
-      return bWeight - aWeight;
+      // Sort apps in descending order of weight.
+      return secondAppWeight - firstAppWeight;
     });
   }
+
 }
