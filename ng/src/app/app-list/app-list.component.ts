@@ -4,7 +4,7 @@ import { map } from "rxjs/operators";
 import { AppListItem, AppListItemTag } from "./app-list.interfaces";
 import { FilterOptionsService } from "../filter-options/fiter-options.services";
 import { AppTypeIds } from "./app-list.enums";
-import * as moment from "moment";
+import * as dayjs from "dayjs";
 import { AppListItemComponent } from "./app-list-item/app-list-item.component";
 import { NgClass, AsyncPipe } from "@angular/common";
 import { MatCardModule } from "@angular/material/card";
@@ -49,11 +49,9 @@ ngOnInit() {
 
   return apps.map((app) => {
     // Determine if the app is new (updated within the last 2 months)
-    app.IsNew = moment()
-      .subtract(2, "months")
-      .isSameOrBefore(moment(app.Updated), "day");
-
-      console.log("IsNew",app.IsNew);
+      app.IsNew = dayjs()
+      .subtract(2, "month")
+      .isBefore(dayjs(app.Updated), "day");
 
     // Check if the app has a 'Top' tag
     const hasTop = app.Tags.find((tag) => tag.Id === AppTypeIds.top);
@@ -88,8 +86,8 @@ ngOnInit() {
 // Function to sort apps by type weight and date
 sortByTypeWeightAndDate(apps: AppListItem[]) {
   return apps.sort((a, b) => {
-    const aDate = moment(a.Updated);
-    const bDate = moment(b.Updated);
+    const aDate = dayjs(a.Updated);
+    const bDate = dayjs(b.Updated);
     const validDates = !!a.Updated && !!b.Updated;
 
     // Determine the weight of the dates
