@@ -22,13 +22,13 @@ import { MatCardModule } from "@angular/material/card";
   ],
 })
 export class AppListComponent implements OnInit {
-  // Observable to store the list of apps
+  // Observable to store the main of apps
   public appList: Observable<AppListItem[]> = null;
 
   constructor(private filterService: FilterOptionsService) { }
 
   ngOnInit() {
-    // Subscribe to the filtered app list observable and apply transformations
+    // Subscribe to the filtered app main observable and apply transformations
     this.appList = this.filterService.appListFiltered.pipe(
       // Categorize apps based on their tags
       map((appList: AppListItem[]) => this.categorize(appList)),
