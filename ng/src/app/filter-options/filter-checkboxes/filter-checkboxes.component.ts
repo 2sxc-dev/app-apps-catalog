@@ -10,7 +10,7 @@ import { map } from "rxjs/operators";
 import { CheckboxIds } from "../filter-options.enums";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatCheckboxModule } from "@angular/material/checkbox";
-import { NgFor, NgIf, AsyncPipe, JsonPipe } from "@angular/common";
+import { AsyncPipe, JsonPipe } from "@angular/common";
 
 @Component({
     selector: "app-filter-checkboxes",
@@ -18,15 +18,13 @@ import { NgFor, NgIf, AsyncPipe, JsonPipe } from "@angular/common";
     styleUrls: ["./filter-checkboxes.component.scss"],
     standalone: true,
     imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        NgFor,
-        MatCheckboxModule,
-        NgIf,
-        MatTooltipModule,
-        AsyncPipe,
-        JsonPipe,
-    ],
+    FormsModule,
+    ReactiveFormsModule,
+    MatCheckboxModule,
+    MatTooltipModule,
+    AsyncPipe,
+    JsonPipe
+],
 })
 export class FilterCheckboxesComponent implements OnInit {
   @Input() titlePrefix: string = null;

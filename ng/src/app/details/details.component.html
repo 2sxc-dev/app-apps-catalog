@@ -1,13 +1,11 @@
-<ng-container *ngIf="app$ | async as app">
-  <ng-container *ngIf="releases$ | async as releases">
+@if (app$ | async; as app) {
+  @if (releases$ | async; as releases) {
     <div class="container mb-3 pt-4">
       <a class="btn btn-primary mb-3 text-white" [routerLink]="['/']">Zurück</a>
-
       <div class="row">
         <div class="col-8">
           <!-- HEADLINE -->
           <h2 class="font-weight-bolder fs-5">{{ app.Name }}</h2>
-
           <!-- EXTERNAL LINKS -->
           <div class="mb-3">
             <a
@@ -15,185 +13,180 @@
               target="_blank"
               class="btn btn-primary mr-2 mb-1"
               >Download Latest</a
-            >
-            <a
-              href="{{ app.Github }}"
-              target="_blank"
-              class="btn btn-outline-dark mr-2 mb-1"
-              >GitHub</a
-            >
-            <a
-              *ngIf="app.DemoLink"
-              href="{{ app.DemoLink }}"
-              target="_blank"
-              class="btn btn-outline-dark mr-2 mb-1"
-              >Live Demo</a
-            >
-            <a href="#releases" class="btn btn-outline-dark mr-2 mb-1"
-              >Other Releases</a
-            >
-          </div>
-
-          <!-- CONTENT -->
-          <div class="mb-3" [innerHTML]="app.Description"></div>
-
-          <!-- Tags -->
-          <div class="mb-3">
-            <a
-              *ngFor="let detail of app.Tags"
-              class="badge badge-secondary mr-2 mb-1 fw-light text-decoration-none tags"
-              href="#"
-              target="_blank"
-              >{{ detail.Title }}</a
-            >
-          </div>
-        </div>
-
-        <!-- IMAGE -->
-        <div class="col-4 text-right bg-img">
-          <img
-            class="img-border-shadow img-fluid rounded-start w-50"
-            src="https://2sxc.org{{ app.Icon }}"
-          />
-        </div>
-
-        <!--App Screenshots-->
-        <div class="container">
-          <div class="mb-2">
-            <h2 class="mb-2">App Screenshots</h2>
-            <div
-              class="d-flex w-100 justify-content-center align-items-center flex-row"
-            >
-              <div class="col-4">
-                <img
-                  class="w-100"
-                  src="https://2sxc.org/Portals/0/adam/AppCatalog/5V8XATpQ_Ee9LmKSTicf9Q/Screenshots/10%20Timeline%20Standard%20View.jpg"
-                  alt=""
-                />
-                <h4 class="mt-2">TIMELINE STANDARD VIEW</h4>
-              </div>
-              <div class="col-4">
-                <img
-                  class="w-100"
-                  src="https://2sxc.org/Portals/0/adam/AppCatalog/5V8XATpQ_Ee9LmKSTicf9Q/Screenshots/20%20Timeline%20with%20hover-edit%20buttons.jpg?w=255&h=162&mode=crop"
-                  alt=""
-                />
-                <h4 class="mt-2">TIMELINE WITH HOVER-EDIT BUTTONS</h4>
-              </div>
-              <div class="col-4">
-                <img
-                  class="w-100"
-                  src="https://2sxc.org/Portals/0/adam/AppCatalog/5V8XATpQ_Ee9LmKSTicf9Q/Screenshots/30%20Editing%20data%20in%20timeline.jpg?w=255&h=162&mode=crop"
-                  alt=""
-                />
-                <h4 class="mt-2">EDITING DATA IN TIMELINE</h4>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!--Detailed Description-->
-        <div
-          *ngIf="app.DescriptionLong"
-          class="mb-3 co-content-detail-description"
-        >
-          <h2 class="font-weight-bolder fs-5">Detailed Description</h2>
-
-          <div
-            class="co-content-detail-description-copy"
-            [innerHTML]="app.DescriptionLong"
-          ></div>
-        </div>
-
-        <!--System Info-->
-        <div>
-          <h3 class="font-weight-bolder">System Info</h3>
-
-          <div class="card col-12 bg-light mb-3">
-            <div class="card-body">
-              <p class="card-text">
-                v.{{ latestVersion.Version }}
-                <br />
-                GUID: {{ app.AppGuid }} <br />
-                for 2sxc {{ app.Min2sxc }}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!--Releases End-->
-        <div *ngIf="releases" class="mb-3 col-12">
-          <h3 class="font-weight-bolder" id="releases">Releases</h3>
-          <ol>
-            <div *ngFor="let release of releases">
-              <li>
-                <a href="{{ release.Download }}">{{ release.Version }}</a>
-                <div [innerHTML]="release.ReleaseNotes"></div>
-              </li>
-            </div>
-          </ol>
-        </div>
-
-        <!-- Main Version  -->
-        <div class="mb-3 col-12">
-          <h3 class="font-weight-bolder">All Main Versions Hard coded</h3>
-
-          <div class="col-md-12">
-            <ol>
-              <li>
-                <a
-                  href="https://2sxc.org/en/apps/app/timelinejs-app-for-dnn-dotnetnuke"
-                  >V. 01.09.00 for 2sxc
-                </a>
-                - 1 releases
-              </li>
-              <li>
-                <a
-                  href="https://2sxc.org/en/apps/app/timelinejs-app-v2-hybrid-for-dnn-and-oqtane"
-                  >V. 02.02.01 for 2sxc 14.09.00</a
+              >
+              <a
+                href="{{ app.Github }}"
+                target="_blank"
+                class="btn btn-outline-dark mr-2 mb-1"
+                >GitHub</a
                 >
-                - 5 releases
-              </li>
-            </ol>
-          </div>
-        </div>
-
-        <!-- History -->
-        <div *ngIf="app.History" class="mb-3 col-12">
-          <h3 class="font-weight-bolder">History</h3>
-          <div [innerHTML]="app.History"></div>
-        </div>
-
-        <!-- Getting started -->
-        <div class="mb-2 col-12">
-          <h3 class="font-weight-bolder">Discover more</h3>
-          <a
-            class="link-primary text-decoration-none"
+                @if (app.DemoLink) {
+                  <a
+                    href="{{ app.DemoLink }}"
+                    target="_blank"
+                    class="btn btn-outline-dark mr-2 mb-1"
+                    >Live Demo</a
+                    >
+                  }
+                  <a href="#releases" class="btn btn-outline-dark mr-2 mb-1"
+                    >Other Releases</a
+                    >
+                  </div>
+                  <!-- CONTENT -->
+                  <div class="mb-3" [innerHTML]="app.Description"></div>
+                  <!-- Tags -->
+                  <div class="mb-3">
+                    @for (detail of app.Tags; track detail) {
+                      <a
+                        class="badge badge-secondary mr-2 mb-1 fw-light text-decoration-none tags"
+                        href="#"
+                        target="_blank"
+                        >{{ detail.Title }}</a
+                        >
+                      }
+                    </div>
+                  </div>
+                  <!-- IMAGE -->
+                  <div class="col-4 text-right bg-img">
+                    <img
+                      class="img-border-shadow img-fluid rounded-start w-50"
+                      src="https://2sxc.org{{ app.Icon }}"
+                      />
+                  </div>
+                  <!--App Screenshots-->
+                  <div class="container">
+                    <div class="mb-2">
+                      <h2 class="mb-2">App Screenshots</h2>
+                      <div
+                        class="d-flex w-100 justify-content-center align-items-center flex-row"
+                        >
+                        <div class="col-4">
+                          <img
+                            class="w-100"
+                            src="https://2sxc.org/Portals/0/adam/AppCatalog/5V8XATpQ_Ee9LmKSTicf9Q/Screenshots/10%20Timeline%20Standard%20View.jpg"
+                            alt=""
+                            />
+                          <h4 class="mt-2">TIMELINE STANDARD VIEW</h4>
+                        </div>
+                        <div class="col-4">
+                          <img
+                            class="w-100"
+                            src="https://2sxc.org/Portals/0/adam/AppCatalog/5V8XATpQ_Ee9LmKSTicf9Q/Screenshots/20%20Timeline%20with%20hover-edit%20buttons.jpg?w=255&h=162&mode=crop"
+                            alt=""
+                            />
+                          <h4 class="mt-2">TIMELINE WITH HOVER-EDIT BUTTONS</h4>
+                        </div>
+                        <div class="col-4">
+                          <img
+                            class="w-100"
+                            src="https://2sxc.org/Portals/0/adam/AppCatalog/5V8XATpQ_Ee9LmKSTicf9Q/Screenshots/30%20Editing%20data%20in%20timeline.jpg?w=255&h=162&mode=crop"
+                            alt=""
+                            />
+                          <h4 class="mt-2">EDITING DATA IN TIMELINE</h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--Detailed Description-->
+                  @if (app.DescriptionLong) {
+                    <div
+                      class="mb-3 co-content-detail-description"
+                      >
+                      <h2 class="font-weight-bolder fs-5">Detailed Description</h2>
+                      <div
+                        class="co-content-detail-description-copy"
+                        [innerHTML]="app.DescriptionLong"
+                      ></div>
+                    </div>
+                  }
+                  <!--System Info-->
+                  <div>
+                    <h3 class="font-weight-bolder">System Info</h3>
+                    <div class="card col-12 bg-light mb-3">
+                      <div class="card-body">
+                        <p class="card-text">
+                          v.{{ latestVersion.Version }}
+                          <br />
+                          GUID: {{ app.AppGuid }} <br />
+                          for 2sxc {{ app.Min2sxc }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <!--Releases End-->
+                  @if (releases) {
+                    <div class="mb-3 col-12">
+                      <h3 class="font-weight-bolder" id="releases">Releases</h3>
+                      <ol>
+                        @for (release of releases; track release) {
+                          <div>
+                            <li>
+                              <a href="{{ release.Download }}">{{ release.Version }}</a>
+                              <div [innerHTML]="release.ReleaseNotes"></div>
+                            </li>
+                          </div>
+                        }
+                      </ol>
+                    </div>
+                  }
+                  <!-- Main Version  -->
+                  <div class="mb-3 col-12">
+                    <h3 class="font-weight-bolder">All Main Versions Hard coded</h3>
+                    <div class="col-md-12">
+                      <ol>
+                        <li>
+                          <a
+                            href="https://2sxc.org/en/apps/app/timelinejs-app-for-dnn-dotnetnuke"
+                            >V. 01.09.00 for 2sxc
+                          </a>
+                          - 1 releases
+                        </li>
+                        <li>
+                          <a
+                            href="https://2sxc.org/en/apps/app/timelinejs-app-v2-hybrid-for-dnn-and-oqtane"
+                            >V. 02.02.01 for 2sxc 14.09.00</a
+                            >
+                            - 5 releases
+                          </li>
+                        </ol>
+                      </div>
+                    </div>
+                    <!-- History -->
+                    @if (app.History) {
+                      <div class="mb-3 col-12">
+                        <h3 class="font-weight-bolder">History</h3>
+                        <div [innerHTML]="app.History"></div>
+                      </div>
+                    }
+                    <!-- Getting started -->
+                    <div class="mb-2 col-12">
+                      <h3 class="font-weight-bolder">Discover more</h3>
+                      <a
+                        class="link-primary text-decoration-none"
             href="https://2sxc.org/en/apps/gettingstarted?AppGuid={{
               app.AppGuid
             }}"
-            target="_blank"
-            >Getting started</a
-          >
-        </div>
+                        target="_blank"
+                        >Getting started</a
+                        >
+                      </div>
+                      <!-- Created by -->
+                      <div class="mb-2 col-12">
+                        <h3 class="font-weight-bolder">Created by</h3>
+                        <a
+                          class="link-primary text-decoration-none"
+                          href="https://www.2sic.com/"
+                          target="_blank"
+                          >2sic Internet Solutions</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  }
+                }
 
-        <!-- Created by -->
-        <div class="mb-2 col-12">
-          <h3 class="font-weight-bolder">Created by</h3>
-          <a
-            class="link-primary text-decoration-none"
-            href="https://www.2sic.com/"
-            target="_blank"
-            >2sic Internet Solutions</a
-          >
-        </div>
-      </div>
-    </div>
-  </ng-container>
-</ng-container>
+                <!-- <ng-container *ngIf="releases$ | async as releases">
 
-<!-- <ng-container *ngIf="releases$ | async as releases">
+              </ng-container>
 
-</ng-container>
-
-{{releases$ | async | json}} -->
+              {{releases$ | async | json}} -->

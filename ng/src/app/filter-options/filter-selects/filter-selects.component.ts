@@ -9,7 +9,7 @@ import { FilterOptionsService } from "../fiter-options.services";
 import { MatOptionSelectionChange, MatOptionModule } from "@angular/material/core";
 import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
-import { NgFor, NgClass, AsyncPipe } from "@angular/common";
+import { NgClass, AsyncPipe } from "@angular/common";
 
 @Component({
     selector: "app-filter-selects",
@@ -17,15 +17,14 @@ import { NgFor, NgClass, AsyncPipe } from "@angular/common";
     styleUrls: ["./filter-selects.component.scss"],
     standalone: true,
     imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        NgFor,
-        NgClass,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatOptionModule,
-        AsyncPipe,
-    ],
+    FormsModule,
+    ReactiveFormsModule,
+    NgClass,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
+    AsyncPipe
+],
 })
 export class FilterSelectsComponent implements OnInit {
   @Input() titlePrefix: string = null;

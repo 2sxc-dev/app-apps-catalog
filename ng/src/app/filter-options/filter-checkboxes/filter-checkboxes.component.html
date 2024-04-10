@@ -1,25 +1,27 @@
 <form [formGroup]="checkboxForm">
-  <ng-container *ngFor="let checkboxGroup of checkboxGroups$ | async">
+  @for (checkboxGroup of checkboxGroups$ | async; track checkboxGroup) {
     <div
       class="d-flex justify-content-between flex-wrap flex-column flex-md-row filter-checkbox-container"
-    >
+      >
       <mat-checkbox
         [checked]="!areSomeCheckboxesSelected()"
         [disabled]="!areSomeCheckboxesSelected()"
         (change)="showAll()"
         >Show all</mat-checkbox
-      >
-      <ng-container *ngFor="let option of checkboxGroup?.Options">
-        <ng-container *ngIf="!option">{{ option | json }}</ng-container>
-        <mat-checkbox
-          [class.disable]="option?.Disabled"
-          [formControlName]="option?.Title"
-          (change)="toggleCheckbox(option, $event?.checked)"
-          matTooltip="{{ option?.Tooltip }}"
         >
-          {{ option?.Tag }}
-        </mat-checkbox>
-      </ng-container>
-    </div>
-  </ng-container>
-</form>
+        @for (option of checkboxGroup?.Options; track option) {
+          @if (!option) {
+            {{ option | json }}
+          }
+          <mat-checkbox
+            [class.disable]="option?.Disabled"
+            [formControlName]="option?.Title"
+            (change)="toggleCheckbox(option, $event?.checked)"
+            matTooltip="{{ option?.Tooltip }}"
+            >
+            {{ option?.Tag }}
+          </mat-checkbox>
+        }
+      </div>
+    }
+  </form>

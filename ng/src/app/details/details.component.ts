@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { DataService } from "../data-service/data.service";
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import {  map, Observable, tap } from "rxjs";
-import { NgIf, NgFor, AsyncPipe } from "@angular/common";
+import { AsyncPipe } from "@angular/common";
 
 @Component({
     selector: "app-details",
@@ -10,11 +10,9 @@ import { NgIf, NgFor, AsyncPipe } from "@angular/common";
     styleUrls: ["./details.component.scss"],
     standalone: true,
     imports: [
-        NgIf,
-        RouterLink,
-        NgFor,
-        AsyncPipe,
-    ],
+    RouterLink,
+    AsyncPipe
+],
 })
 export class DetailsComponent implements OnInit {
   app$!: Observable<any>;

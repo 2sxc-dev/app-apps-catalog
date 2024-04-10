@@ -1,14 +1,12 @@
 <mat-card class="p-0 mb-3">
-  <ng-container
-    *ngFor="let app of appList | async; last as last; first as first"
-  >
+  @for (app of appList | async; track app; let last = $last; let first = $first) {
     <app-list-item
       [app]="app"
       [ngClass]="{ 'last-item': last, 'first-item': first }"
     ></app-list-item>
-  </ng-container>
+  }
 </mat-card>
 
-<ng-container *ngIf="(appList | async)?.length === 0">
+@if ((appList | async)?.length === 0) {
   <div class="alert alert-primary" role="alert">No Apps for this selection</div>
-</ng-container>
+}

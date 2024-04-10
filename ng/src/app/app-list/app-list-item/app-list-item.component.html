@@ -5,10 +5,10 @@
     href="https://2sxc.org/apps/app/{{ app.UrlKey }}"
     target="_blank"
     class="stretched-link"
-  >
+    >
     <div
       class="row mb-1 pt-3 align-items-center w-100 item d-flex flex-wrap justify-content-center mr-1 ml-1"
-    >
+      >
       <!-- Image links -->
       <div class="col-6 col-sm-4 col-lg-2 mb-3">
         <img class="img-fluid" [src]="app?.Icon" />
@@ -22,38 +22,40 @@
             href="https://2sxc.org/apps/app/{{ app.UrlKey }}"
             target="_blank"
             >{{ app?.Name }}</a
-          >
-          <span
-            class="ml-2 type"
+            >
+            @if (!!app?.Type?.Title) {
+              <span
+                class="ml-2 type"
             [ngClass]="{
               stable: app?.Type?.Id === appTypeIds.stable,
               top: app?.Type?.Id === appTypeIds.top,
               old: app?.Type?.Id === appTypeIds.old
             }"
-            *ngIf="!!app?.Type?.Title"
-            >{{ app?.Type?.Title }}</span
-          >
-          <span
-            class="type new"
-            [ngStyle]="{ 'margin-left.px': !!app?.Type ? 2 : 10 }"
-            *ngIf="app?.IsNew"
-            >New</span
-          >
-        </h4>
-        <span
-          class="short-description"
-          [innerHTML]="app?.ShortDescription"
-        ></span>
-      </div>
+                >{{ app?.Type?.Title }}</span
+                >
+              }
+              @if (app?.IsNew) {
+                <span
+                  class="type new"
+                  [ngStyle]="{ 'margin-left.px': !!app?.Type ? 2 : 10 }"
+                  >New</span
+                  >
+                }
+              </h4>
+              <span
+                class="short-description"
+                [innerHTML]="app?.ShortDescription"
+              ></span>
+            </div>
 
-      <!-- Tags rechts -->
-      <div class="col-12 col-lg-4">
-        <ng-container *ngFor="let Tag of app?.Tags">
-          <span class="badge bg-secondary tags mb-1 mr-1">{{
-            Tag?.Title
-          }}</span>
-        </ng-container>
+            <!-- Tags rechts -->
+            <div class="col-12 col-lg-4">
+              @for (Tag of app?.Tags; track Tag) {
+                <span class="badge bg-secondary tags mb-1 mr-1">{{
+                  Tag?.Title
+                }}</span>
+              }
+            </div>
+          </div>
+        </a>
       </div>
-    </div>
-  </a>
-</div>
