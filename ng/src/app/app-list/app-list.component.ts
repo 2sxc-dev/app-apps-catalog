@@ -5,11 +5,23 @@ import { AppListItem, AppListItemTag } from "./app-list.interfaces";
 import { FilterOptionsService } from "../filter-options/fiter-options.services";
 import { AppTypeIds } from "./app-list.enums";
 import * as moment from "moment";
+import { AppListItemComponent } from "./app-list-item/app-list-item.component";
+import { NgFor, NgClass, NgIf, AsyncPipe } from "@angular/common";
+import { MatCardModule } from "@angular/material/card";
 
 @Component({
-  selector: "app-list",
-  templateUrl: "./app-list.component.html",
-  styleUrls: ["./app-list.component.scss"],
+    selector: "app-list",
+    templateUrl: "./app-list.component.html",
+    styleUrls: ["./app-list.component.scss"],
+    standalone: true,
+    imports: [
+        MatCardModule,
+        NgFor,
+        AppListItemComponent,
+        NgClass,
+        NgIf,
+        AsyncPipe,
+    ],
 })
 export class AppListComponent implements OnInit {
   // Observable to store the list of apps

@@ -3,11 +3,20 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { FilterCategoryGroup } from "./filter-options.interfaces";
 import { FilterOptionsService } from "./fiter-options.services";
+import { FilterSelectsComponent } from "./filter-selects/filter-selects.component";
+import { FilterCheckboxesComponent } from "./filter-checkboxes/filter-checkboxes.component";
+import { MatExpansionModule } from "@angular/material/expansion";
 
 @Component({
-  selector: "app-filter-options",
-  templateUrl: "./filter-options.component.html",
-  styleUrls: ["./filter-options.component.scss"],
+    selector: "app-filter-options",
+    templateUrl: "./filter-options.component.html",
+    styleUrls: ["./filter-options.component.scss"],
+    standalone: true,
+    imports: [
+        MatExpansionModule,
+        FilterCheckboxesComponent,
+        FilterSelectsComponent,
+    ],
 })
 export class FilterOptionsComponent implements OnInit {
  // Define a title prefix for filter labels

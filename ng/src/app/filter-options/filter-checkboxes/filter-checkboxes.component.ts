@@ -4,15 +4,29 @@ import {
   FilterCategoryGroup,
   FilterOption,
 } from "../filter-options.interfaces";
-import { FormGroup, FormControl } from "@angular/forms";
+import { FormGroup, FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FilterOptionsService } from "../fiter-options.services";
 import { map } from "rxjs/operators";
 import { CheckboxIds } from "../filter-options.enums";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { NgFor, NgIf, AsyncPipe, JsonPipe } from "@angular/common";
 
 @Component({
-  selector: "app-filter-checkboxes",
-  templateUrl: "./filter-checkboxes.component.html",
-  styleUrls: ["./filter-checkboxes.component.scss"],
+    selector: "app-filter-checkboxes",
+    templateUrl: "./filter-checkboxes.component.html",
+    styleUrls: ["./filter-checkboxes.component.scss"],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        NgFor,
+        MatCheckboxModule,
+        NgIf,
+        MatTooltipModule,
+        AsyncPipe,
+        JsonPipe,
+    ],
 })
 export class FilterCheckboxesComponent implements OnInit {
   @Input() titlePrefix: string = null;

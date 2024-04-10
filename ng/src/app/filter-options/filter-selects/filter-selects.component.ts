@@ -4,14 +4,28 @@ import {
   FilterCategoryGroup,
   FilterOption,
 } from "../filter-options.interfaces";
-import { FormGroup, FormControl } from "@angular/forms";
+import { FormGroup, FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FilterOptionsService } from "../fiter-options.services";
-import { MatOptionSelectionChange } from "@angular/material/core";
+import { MatOptionSelectionChange, MatOptionModule } from "@angular/material/core";
+import { MatSelectModule } from "@angular/material/select";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { NgFor, NgClass, AsyncPipe } from "@angular/common";
 
 @Component({
-  selector: "app-filter-selects",
-  templateUrl: "./filter-selects.component.html",
-  styleUrls: ["./filter-selects.component.scss"],
+    selector: "app-filter-selects",
+    templateUrl: "./filter-selects.component.html",
+    styleUrls: ["./filter-selects.component.scss"],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        NgFor,
+        NgClass,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatOptionModule,
+        AsyncPipe,
+    ],
 })
 export class FilterSelectsComponent implements OnInit {
   @Input() titlePrefix: string = null;

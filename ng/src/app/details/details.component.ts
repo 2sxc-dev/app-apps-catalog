@@ -1,12 +1,20 @@
 import { Component, OnInit } from "@angular/core";
 import { DataService } from "../data-service/data.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import {  map, Observable, tap } from "rxjs";
+import { NgIf, NgFor, AsyncPipe } from "@angular/common";
 
 @Component({
-  selector: "app-details",
-  templateUrl: "./details.component.html",
-  styleUrls: ["./details.component.scss"],
+    selector: "app-details",
+    templateUrl: "./details.component.html",
+    styleUrls: ["./details.component.scss"],
+    standalone: true,
+    imports: [
+        NgIf,
+        RouterLink,
+        NgFor,
+        AsyncPipe,
+    ],
 })
 export class DetailsComponent implements OnInit {
   app$!: Observable<any>;
