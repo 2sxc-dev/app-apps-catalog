@@ -53,6 +53,8 @@ ngOnInit() {
       .subtract(2, "months")
       .isSameOrBefore(moment(app.Updated), "day");
 
+      console.log("IsNew",app.IsNew);
+
     // Check if the app has a 'Top' tag
     const hasTop = app.Tags.find((tag) => tag.Id === AppTypeIds.top);
     if (!!hasTop) {
