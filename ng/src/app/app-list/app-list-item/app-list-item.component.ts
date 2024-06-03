@@ -1,6 +1,6 @@
-import { Component, Input } from "@angular/core";
+import { Component, ElementRef, Input, ViewChild } from "@angular/core";
 import { AppTypeIds } from "../app-list.enums";
-import { NgClass, NgStyle } from "@angular/common";
+import { NgClass, NgFor, NgStyle } from "@angular/common";
 import { AppListItem } from "../app-list.interfaces";
 
 @Component({
@@ -10,13 +10,33 @@ import { AppListItem } from "../app-list.interfaces";
   standalone: true,
   imports: [
     NgClass,
-    NgStyle
+    NgStyle,
   ],
 })
 export class AppListItemComponent {
+  @ViewChild('tagsContainer') tagsContainer!: ElementRef;
+  isExpanded = false;
+
   public appTypeIds = AppTypeIds;
 
   @Input() app!: AppListItem;
 
   ngOnInit() { }
+
+  toggleExpand() {
+    this.isExpanded = !this.isExpanded;
+    if (!this.isExpanded)
+      this.checkElementHeight();
+  }
+
+  checkElementHeight() {
+    const element = this.tagsContainer.nativeElement;
+    if (element.scrollHeight > 60) {
+      element.classList.add('with-gradient');
+    } else {
+      element.classList.remove('with-gradient');
+    }
+  }
+
+
 }
