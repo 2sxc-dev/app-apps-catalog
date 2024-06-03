@@ -4,12 +4,12 @@
   <a href="details/app/{{ app.UrlKey }}" class="stretched-link">
     <div class="row align-items-center w-100 item d-flex flex-wrap justify-content-center py-2 py-md-2">
       <!-- Image links -->
-      <div class="col-6 col-sm-4 col-lg-2 mb-2 mb-md-0">
+      <div class="col-6 col-sm-2 col-lg-1 mb-2 mb-lg-0">
         <img class="img-fluid" [src]="app?.Icon" />
       </div>
 
       <!-- Content -->
-      <div class="col-12 col-sm-8 col-lg-6 mb-2 mb-md-0">
+      <div class="col-12 col-sm-10 col-lg-7 mb-2 mb-md-0">
         <h4 style="margin-bottom: 4px;">
           {{ app?.Name }}
           @if (!!app?.Type?.Title) {
