@@ -10,7 +10,7 @@
 
       <!-- Content -->
       <div class="col-12 col-sm-8 col-lg-6 mb-2 mb-md-0">
-        <h4>
+        <h4 style="margin-bottom: 4px;">
           {{ app?.Name }}
           @if (!!app?.Type?.Title) {
           <span class="ml-2 type" [ngClass]="{
@@ -34,7 +34,7 @@
         <!-- Show Tags, if more then 2 Tags Rows, set a gradient and click to show the other Tags-->
         <a href="javascript:void(0)">
         <div  class="d-flex flex-wrap" [ngClass]="{ 'with-gradient': tagsContainer.scrollHeight > 60 && !isExpanded }"
-          [ngStyle]="{ 'max-height': isExpanded ? 'none' : 'calc(60px + 0.35rem)', 'overflow': 'hidden' }"
+          [ngStyle]="{ 'max-height': isExpanded ? 'none' : 'calc(60px + 0.25rem)', 'overflow': 'hidden' }"
           #tagsContainer (click)="toggleExpand()" style="gap: 0.35rem; cursor: pointer;">
          <!-- Get all Tags as Badge -->
           @for (tag of app?.Tags; track tag) {
