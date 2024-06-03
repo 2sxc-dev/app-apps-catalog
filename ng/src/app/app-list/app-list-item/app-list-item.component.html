@@ -1,7 +1,7 @@
 <div class="container">
   <!-- wird verwendet, wenn es über Routing auf die Detail weiter geleitet wird -->
   <!-- <a routerLink="/details/{{ app.Id }}" class="stretched-link"> -->
-  <a href="/apps/app/{{ app.UrlKey }}" class="stretched-link">
+  <a href="details/app/{{ app.UrlKey }}" class="stretched-link">
     <div class="row align-items-center w-100 item d-flex flex-wrap justify-content-center py-2 py-md-2">
       <!-- Image links -->
       <div class="col-6 col-sm-4 col-lg-2 mb-2 mb-md-0">
@@ -24,7 +24,9 @@
           <span class="type new" [ngStyle]="{ 'margin-left.px': !!app?.Type ? 2 : 10 }">New</span>
           }
         </h4>
-        <span class="short-description" [innerHTML]="app?.ShortDescription"></span>
+        <span class="short-description" >
+          <p [innerHTML]="app?.ShortDescription"></p>
+        </span>
       </div>
 
       <!-- Tags right, max height 50px + 0.35rem -->
