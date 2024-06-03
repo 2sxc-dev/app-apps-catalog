@@ -24,9 +24,9 @@
           <span class="type new" [ngStyle]="{ 'margin-left.px': !!app?.Type ? 2 : 10 }">New</span>
           }
         </h4>
-        <span class="short-description" >
-          <p [innerHTML]="app?.ShortDescription"></p>
-        </span>
+        <div class="short-description" >
+          <p class="mb-0" [innerHTML]="app?.ShortDescription"></p>
+        </div>
       </div>
 
       <!-- Tags right, max height 50px + 0.35rem -->
