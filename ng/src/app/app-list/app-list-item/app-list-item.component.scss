@@ -3,10 +3,10 @@
     border-bottom: 1px solid #efefef;
   }
   &:hover {
-    background-color: rgba(230,230,230,1);
+    background-color: rgba(230, 230, 230, 1);
 
     .with-gradient:after {
-      background: linear-gradient(rgba(255,255,255,0), rgba(230,230,230,1));
+      background: linear-gradient(rgba(255, 255, 255, 0), rgba(230, 230, 230, 1));
     }
   }
 }
@@ -90,4 +90,8 @@ h4 {
   .with-gradient.expanded {
     max-height: none;
   }
+}
+
+.old-app-container {
+  opacity: 0.5;
 }

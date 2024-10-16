@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" [ngClass]="{'old-app-container' : isOldApp(app, appTypeIds.old)}">
   <!-- wird verwendet, wenn es über Routing auf die Detail weiter geleitet wird -->
   <!-- <a routerLink="/details/{{ app.Id }}" class="stretched-link"> -->
   <a href="details/app/{{ app.UrlKey }}" class="stretched-link">
@@ -24,26 +24,26 @@
           <span class="type new" [ngStyle]="{ 'margin-left.px': !!app?.Type ? 2 : 10 }">New</span>
           }
         </h4>
-        <div class="short-description" >
+        <div class="short-description">
           <p class="mb-0" [innerHTML]="app?.ShortDescription"></p>
         </div>
       </div>
 
       <!-- Tags right, max height 50px + 0.35rem -->
-      <div class="col-12 col-lg-4 tag-custom" >
+      <div class="col-12 col-lg-4 tag-custom">
         <!-- Show Tags, if more then 2 Tags Rows, set a gradient and click to show the other Tags-->
         <a href="javascript:void(0)">
-        <div  class="d-flex flex-wrap" [ngClass]="{ 'with-gradient': tagsContainer.scrollHeight > 60 && !isExpanded }"
-          [ngStyle]="{ 'max-height': isExpanded ? 'none' : 'calc(60px + 0.25rem)', 'overflow': 'hidden' }"
-          #tagsContainer (click)="toggleExpand()" style="gap: 0.35rem; cursor: pointer;">
-         <!-- Get all Tags as Badge -->
-          @for (tag of app?.Tags; track tag) {
-          <span  class="badge bg-secondary tags m-0">
-            {{ tag?.Title }}
-          </span>
-        }
-        </div>
-      </a>
+          <div class="d-flex flex-wrap" [ngClass]="{ 'with-gradient': tagsContainer.scrollHeight > 60 && !isExpanded }"
+            [ngStyle]="{ 'max-height': isExpanded ? 'none' : 'calc(60px + 0.25rem)', 'overflow': 'hidden' }"
+            #tagsContainer (click)="toggleExpand()" style="gap: 0.35rem; cursor: pointer;">
+            <!-- Get all Tags as Badge -->
+            @for (tag of app?.Tags; track tag) {
+            <span class="badge bg-secondary tags m-0">
+              {{ tag?.Title }}
+            </span>
+            }
+          </div>
+        </a>
       </div>
 
     </div>

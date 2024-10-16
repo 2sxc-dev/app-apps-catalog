@@ -38,5 +38,7 @@ export class AppListItemComponent {
     }
   }
 
-
+  isOldApp(app: AppListItem, appTypeId: number): boolean {
+    return app.Tags.some(tag => tag.Id === appTypeId);
+  }
 }
