@@ -86,9 +86,12 @@ export class FilterCheckboxesComponent implements OnInit {
 
         groups.forEach((group: FilterCategoryGroup) =>
           group.Options.forEach((option: FilterOption) => {
+            // Set 'old' checkbox to true
+            const isOldCheckbox = option.Id === CheckboxIds.old;
             this.checkboxForm.addControl(
               option.Title,
-              new FormControl(!option.ShowApps)
+              // new FormControl(!option.ShowApps)
+              new FormControl(isOldCheckbox ? true : !option.ShowApps) // Setzt 'old' von Anfang an auf true
             );
           })
         );
