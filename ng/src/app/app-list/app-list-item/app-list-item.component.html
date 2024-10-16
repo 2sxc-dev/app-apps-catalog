@@ -1,4 +1,4 @@
-<div class="container" [ngClass]="{'old-app-container' : isOldApp(app, appTypeIds.old)}">
+<div class="container" [ngClass]="{'old-app-container' : app?.Type?.Id === appTypeIds.old}">
   <!-- wird verwendet, wenn es über Routing auf die Detail weiter geleitet wird -->
   <!-- <a routerLink="/details/{{ app.Id }}" class="stretched-link"> -->
   <a href="details/app/{{ app.UrlKey }}" class="stretched-link">

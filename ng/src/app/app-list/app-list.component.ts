@@ -53,6 +53,14 @@ export class AppListComponent implements OnInit {
         .subtract(2, "month")
         .isBefore(dayjs(app.Updated), "day");
 
+      // Check if the app has an 'Old' tag
+      const hasOld = app.Tags.find((tag) => tag.Id === AppTypeIds.old);
+      if (!!hasOld) {
+        app.Type = hasOld;
+        app.Type.Weight = -1;
+        return app;
+      }
+
       // Check if the app has a 'Top' tag
       const hasTop = app.Tags.find((tag) => tag.Id === AppTypeIds.top);
       if (!!hasTop) {
@@ -66,14 +74,6 @@ export class AppListComponent implements OnInit {
       if (!!hasStable) {
         app.Type = hasStable;
         app.Type.Weight = 100;
-        return app;
-      }
-
-      // Check if the app has an 'Old' tag
-      const hasOld = app.Tags.find((tag) => tag.Id === AppTypeIds.old);
-      if (!!hasOld) {
-        app.Type = hasOld;
-        app.Type.Weight = -1;
         return app;
       }
 
