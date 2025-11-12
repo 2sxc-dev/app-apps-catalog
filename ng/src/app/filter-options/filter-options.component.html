@@ -1,11 +1,13 @@
 <!-- Desktop -->
 <div class="d-none d-md-block mb-1">
-  <div class="mb-1">
-    <app-filter-checkboxes [checkboxGroups$]="filterCheckboxes$" [titlePrefix]="titlePrefix"></app-filter-checkboxes>
-  </div>
-  <div>
-    <app-filter-selects [selectGroups$]="filterSelects$" [titlePrefix]="titlePrefix"></app-filter-selects>
-  </div>
+  <app-filter-selects
+    [selectGroups$]="filterSelects$"
+    [titlePrefix]="titlePrefix"
+  ></app-filter-selects>
+  <app-filter-checkboxes
+    [checkboxGroups$]="filterCheckboxes$"
+    [titlePrefix]="titlePrefix"
+  ></app-filter-checkboxes>
 </div>
 
 <!-- Mobil  -->
@@ -17,11 +19,13 @@
         selected({{ filterService?.selectedFilters?.length || 0 }})
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <div class="mb-1">
-      <app-filter-checkboxes [checkboxGroups$]="filterCheckboxes$" [titlePrefix]="titlePrefix"></app-filter-checkboxes>
-    </div>
-    <div>
-      <app-filter-selects [selectGroups$]="filterSelects$" [titlePrefix]="titlePrefix"></app-filter-selects>
-    </div>
+    <app-filter-selects
+      [selectGroups$]="filterSelects$"
+      [titlePrefix]="titlePrefix"
+    ></app-filter-selects>
+    <app-filter-checkboxes
+      [checkboxGroups$]="filterCheckboxes$"
+      [titlePrefix]="titlePrefix"
+    ></app-filter-checkboxes>
   </mat-expansion-panel>
 </div>
