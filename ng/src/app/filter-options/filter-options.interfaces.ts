@@ -1,4 +1,5 @@
 import { AppListItemTag } from "../app-list/app-list.interfaces";
+
 export interface FilterOption extends AppListItemTag {
   Disabled: boolean;
   Tooltip: string;
@@ -18,4 +19,6 @@ interface Option {
   Tag: string;
   Title: string;
   Tooltip: string;
+  Order?: number;
+  Teaser?: string;
 }

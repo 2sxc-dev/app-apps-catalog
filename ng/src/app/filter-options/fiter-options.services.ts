@@ -52,8 +52,12 @@ export class FilterOptionsService {
   // Function to filter the app list based on selected filters
   public filterAppList(appList: AppListItem[] = this.appList) {
     // Helper functions to check if an app has certain filters
-    const appHasFilter = (app: AppListItem, filter: FilterOption) =>
-      app.Tags.some((tag) => filter.Id === tag.Id);
+    const appHasFilter = (app: AppListItem, filter: FilterOption) => {
+      // Check both Tags and AppType arrays for matching tag Id
+      const tags = (app.Tags || []).concat(app.AppType || []);
+      return tags.some((tag) => filter.Id === tag.Id);
+    };
+
     const appHasSomeFilters = (app: AppListItem, filters: FilterOption[]) =>
       filters.some((filter) => appHasFilter(app, filter));
     const appHasAllFilters = (app: AppListItem, filters: FilterOption[]) =>
@@ -136,7 +140,9 @@ export class FilterOptionsService {
   ): FilterCategoryGroup[] {
     const options = tagList.map((tag: AppListItemTag) => {
       const disabled = !appList.some(
-        (app) => !!app.Tags.find((appTag) => tag.Id === appTag.Id)
+        (app) =>
+          !!(app.Tags || []).find((appTag) => tag.Id === appTag.Id) ||
+          !!(app.AppType || []).find((appTag) => tag.Id === appTag.Id)
       );
       return this.createFilterOption(tag, disabled);
     });
@@ -174,7 +180,15 @@ export class FilterOptionsService {
         return option;
       });
 
-      group.Options.sort((a, b) => a.Title.localeCompare(b.Title));
+      if (group.Category === "AppType") {
+        group.Options.sort((a, b) => {
+          const orderA = a.Order ?? 999;
+          const orderB = b.Order ?? 999;
+          return orderA - orderB;
+        });
+      } else {
+        group.Options.sort((a, b) => a.Title.localeCompare(b.Title));
+      }
     });
 
     return tempGroup;
@@ -182,20 +196,25 @@ export class FilterOptionsService {
 
   // Function to create a filter option
   private createFilterOption(tag: AppListItemTag, disabled: boolean = false) {
-    const { Id, Tag, Title, Category } = tag;
+    const { Id, Tag, Title, Category, Weight, Order, Teaser } = tag;
     let show = true;
 
     if (Id === CheckboxIds.old) {
       show = false;
       disabled = false;
     }
+
     return {
       Id,
       Tag,
       Title,
       Category,
+      Weight: Weight ?? 0,
       Disabled: disabled,
       ShowApps: show,
+      Tooltip: Teaser || Title || "",
+      Order,
+      Teaser,
     } as FilterOption;
   }
 

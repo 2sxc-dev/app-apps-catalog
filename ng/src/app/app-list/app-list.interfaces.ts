@@ -4,6 +4,8 @@ export interface AppListItemTag {
   Tag: string;
   Category: string;
   Weight: number;
+  Order?: number;
+  Teaser?: string;
 }
 
 export interface AppListItem {
@@ -15,6 +17,7 @@ export interface AppListItem {
   ShortDescription: string;
   Description: string;
   Tags: Array<AppListItemTag>;
+  AppType?: Array<AppListItemTag>;
   UrlKey: string;
   Updated: Date;
 }

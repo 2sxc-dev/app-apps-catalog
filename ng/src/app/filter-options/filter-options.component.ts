@@ -26,7 +26,7 @@ export class FilterOptionsComponent implements OnInit {
   public filterCheckboxes$: Observable<FilterCategoryGroup[]> = null;
   public filterSelects$: Observable<FilterCategoryGroup[]> = null;
 
-  constructor(public filterService: FilterOptionsService) { }
+  constructor(public filterService: FilterOptionsService) {}
 
   ngOnInit() {
     // Categories for checkbox filters
@@ -40,7 +40,7 @@ export class FilterOptionsComponent implements OnInit {
     );
 
     // Categories for select filters
-    const selectCategories = ["Complexity", "Technology"];
+    const selectCategories = ["AppType", "Complexity", "Technology"];
     const tagCategory = checkboxCategories.concat(selectCategories);
 
     // Filter select filters based on specified categories

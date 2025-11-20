@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { SxcApp } from "@2sic.com/sxc-angular";
 
 import { shareReplay, Subject } from "rxjs";
@@ -14,7 +14,6 @@ export class DataService {
     this.loadAppsAndTags();
   }
 
-
   private loadAppsAndTags(): void {
     this.dnnData
       .query<{ Apps: AppListItem[]; Tags: Array<AppListItemTag> }>(
@@ -23,15 +22,30 @@ export class DataService {
       .getAll()
       .pipe(shareReplay(1))
       .subscribe(({ Apps, Tags }) => {
-        // const filteredApps = Apps.filter(app => app.Name.toLowerCase().includes('hotspots'));
-        // console.log("filteredApps:", filteredApps);
-        this.appList.next(Apps);
-        this.tagList.next(Tags);
+        // Collect unique AppType tags
+        const appTypeTagsMap = new Map<number, AppListItemTag>();
+        Apps.forEach((app) => {
+          (app.AppType || []).forEach((appType) => {
+            if (!appTypeTagsMap.has(appType.Id)) {
+              appTypeTagsMap.set(appType.Id, {
+                ...appType,
+                Category: "AppType", // Ensure Category is set
+              });
+            }
+          });
+        });
+
+        // Merge AppType into Tags array for each app
+        const processedApps = Apps.map((app) => ({
+          ...app,
+          Tags: [...(app.Tags || []), ...(app.AppType || [])],
+        }));
+
+        // Combine all tags
+        const allTags = [...Tags, ...Array.from(appTypeTagsMap.values())];
+
+        this.appList.next(processedApps);
+        this.tagList.next(allTags);
       });
   }
-
-  // TODO:: Not In Use, Details view is a Razor Page
-  // getDetails(id: number): Observable<any> {
-  //   return this.dnnData.query<any>(`AppWithReleases?id=${id}`).getAll();
-  // }
 }
