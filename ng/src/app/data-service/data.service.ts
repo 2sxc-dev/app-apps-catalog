@@ -22,30 +22,51 @@ export class DataService {
       .getAll()
       .pipe(shareReplay(1))
       .subscribe(({ Apps, Tags }) => {
-        // Collect unique AppType tags
-        const appTypeTagsMap = new Map<number, AppListItemTag>();
-        Apps.forEach((app) => {
-          (app.AppType || []).forEach((appType) => {
-            if (!appTypeTagsMap.has(appType.Id)) {
-              appTypeTagsMap.set(appType.Id, {
-                ...appType,
-                Category: "AppType", // Ensure Category is set
-              });
-            }
+        // fetch types and merge only the matching type object into each app.AppType
+        this.dnnData
+          .query<any>("AppTypes")
+          .getAll()
+          .pipe(shareReplay(1))
+          .subscribe((typesResult) => {
+            const typeList: any[] = (typesResult && typesResult.Apps) || [];
+            const typeMap = new Map(typeList.map((t) => [String(t.Id), t]));
+
+            const processedApps = (Apps || []).map((app) => {
+              const enrichedTypes = (app.AppType || []).map((at: any) => ({
+                ...(typeMap.get(String(at.Id)) || {}),
+                ...at,
+              }));
+
+              return {
+                ...app,
+                AppType: enrichedTypes,
+                Tags: [...(app.Tags || []), ...enrichedTypes],
+              } as AppListItem;
+            });
+
+            const typeTagMap = new Map<string, AppListItemTag>();
+            processedApps.forEach((a) =>
+              (a.AppType || []).forEach((t: any) => {
+                const key = String(t.Id);
+                if (!typeTagMap.has(key))
+                  typeTagMap.set(key, {
+                    ...t,
+                    Category: "AppType",
+                  } as AppListItemTag);
+              })
+            );
+
+            const allTags: AppListItemTag[] = [
+              ...(Tags || []),
+              ...Array.from(typeTagMap.values()),
+            ];
+
+            // emit asynchronously to avoid change-detection hiccups
+            Promise.resolve().then(() => {
+              this.appList.next(processedApps);
+              this.tagList.next(allTags);
+            });
           });
-        });
-
-        // Merge AppType into Tags array for each app
-        const processedApps = Apps.map((app) => ({
-          ...app,
-          Tags: [...(app.Tags || []), ...(app.AppType || [])],
-        }));
-
-        // Combine all tags
-        const allTags = [...Tags, ...Array.from(appTypeTagsMap.values())];
-
-        this.appList.next(processedApps);
-        this.tagList.next(allTags);
       });
   }
 }
