@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { SxcApp } from "@2sic.com/sxc-angular";
 
-import { shareReplay, Subject } from "rxjs";
-import { AppListItem, AppListItemTag } from "../app-list/app-list.interfaces";
+import { combineLatest, shareReplay, Subject } from "rxjs";
+import { AppListItem, AppListItemTag, AppType } from "../app-list/app-list.interfaces";
 
 @Injectable({ providedIn: "root" })
 export class DataService {
@@ -12,61 +12,60 @@ export class DataService {
 
   constructor(private dnnData: SxcApp) {
     this.loadAppsAndTags();
+
+    this.appList.subscribe((apps) => {
+      console.log("Apps loaded:", apps);
+    });
   }
 
   private loadAppsAndTags(): void {
-    this.dnnData
-      .query<{ Apps: AppListItem[]; Tags: Array<AppListItemTag> }>(
-        "AppCatalogList"
-      )
-      .getAll()
-      .pipe(shareReplay(1))
-      .subscribe(({ Apps, Tags }) => {
-        // fetch types and merge only the matching type object into each app.AppType
-        this.dnnData
-          .query<any>("AppTypes")
-          .getAll()
-          .pipe(shareReplay(1))
-          .subscribe((typesResult) => {
-            const typeList: any[] = (typesResult && typesResult.Apps) || [];
-            const typeMap = new Map(typeList.map((t) => [String(t.Id), t]));
+    combineLatest([
+      this.dnnData
+        .query<{ Apps: AppListItem[]; Tags: Array<AppListItemTag> }>(
+          "AppCatalogList"
+        )
+        .getAll()
+        .pipe(shareReplay(1)),
+      this.dnnData
+        .query<AppType[]>("AppTypes")
+        .getAll()
+        .pipe(shareReplay(1)),
+    ]).subscribe(([{ Apps, Tags }, typesResult]) => {
+      const typeList = (typesResult) || [];
+      const typeMap = new Map(typeList.map((t) => [String(t.Id), t]));
 
-            const processedApps = (Apps || []).map((app) => {
-              const enrichedTypes = (app.AppType || []).map((at: any) => ({
-                ...(typeMap.get(String(at.Id)) || {}),
-                ...at,
-              }));
+      const processedApps = (Apps || []).map((app) => {
+        const enrichedTypes = (app.AppType || []).map((at) => ({
+          ...(typeMap.get(String(at.Id)) || {}),
+          ...at,
+        }));
 
-              return {
-                ...app,
-                AppType: enrichedTypes,
-                Tags: [...(app.Tags || []), ...enrichedTypes],
-              } as AppListItem;
-            });
-
-            const typeTagMap = new Map<string, AppListItemTag>();
-            processedApps.forEach((a) =>
-              (a.AppType || []).forEach((t: any) => {
-                const key = String(t.Id);
-                if (!typeTagMap.has(key))
-                  typeTagMap.set(key, {
-                    ...t,
-                    Category: "AppType",
-                  } as AppListItemTag);
-              })
-            );
-
-            const allTags: AppListItemTag[] = [
-              ...(Tags || []),
-              ...Array.from(typeTagMap.values()),
-            ];
-
-            // emit asynchronously to avoid change-detection hiccups
-            Promise.resolve().then(() => {
-              this.appList.next(processedApps);
-              this.tagList.next(allTags);
-            });
-          });
+        return {
+          ...app,
+          AppType: enrichedTypes,
+          Tags: [...(app.Tags || []), ...enrichedTypes],
+        } as AppListItem;
       });
+
+      const typeTagMap = new Map<string, AppListItemTag>();
+      processedApps.forEach((a) =>
+        (a.AppType || []).forEach((t) => {
+          const key = String(t.Id);
+          if (!typeTagMap.has(key))
+            typeTagMap.set(key, {
+              ...t,
+              Category: "AppType",
+            } as AppListItemTag);
+        })
+      );
+
+      const allTags: AppListItemTag[] = [
+        ...(Tags || []),
+        ...Array.from(typeTagMap.values()),
+      ];
+
+      this.appList.next(processedApps);
+      this.tagList.next(allTags);
+    });
   }
 }
