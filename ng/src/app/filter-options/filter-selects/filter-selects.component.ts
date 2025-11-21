@@ -4,9 +4,17 @@ import {
   FilterCategoryGroup,
   FilterOption,
 } from "../filter-options.interfaces";
-import { FormGroup, FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {
+  FormGroup,
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+} from "@angular/forms";
 import { FilterOptionsService } from "../fiter-options.services";
-import { MatOptionSelectionChange, MatOptionModule } from "@angular/material/core";
+import {
+  MatOptionSelectionChange,
+  MatOptionModule,
+} from "@angular/material/core";
 import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { NgClass, AsyncPipe } from "@angular/common";
@@ -23,7 +31,7 @@ import { NgClass, AsyncPipe } from "@angular/common";
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
-    AsyncPipe
+    AsyncPipe,
   ],
 })
 export class FilterSelectsComponent implements OnInit {
@@ -33,7 +41,7 @@ export class FilterSelectsComponent implements OnInit {
   // Define the form to handle selection
   public selectForm: FormGroup = new FormGroup({});
 
-  constructor(private filterService: FilterOptionsService) { }
+  constructor(private filterService: FilterOptionsService) {}
 
   ngOnInit() {
     // Subscribe to the selectGroups$ observable to fetch filter categories

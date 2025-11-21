@@ -112,9 +112,24 @@ export class FilterOptionsService {
                 appHasSomeFilters(app, checkboxFilters)
               )
             : onlyShowApps;
-        const selectedApps = checkboxApps.filter((app) =>
-          appHasAllFilters(app, showFilters)
-        );
+
+        // Include apps with no AppType if "Apps" filter is selected
+        const hasAppFilter = showFilters.some((f) => f.Id === 69327);
+
+        const selectedApps = checkboxApps.filter((app) => {
+          // If "Apps" filter is active and app has empty AppType, check non-AppType filters only
+          if (hasAppFilter && (!app.AppType || app.AppType.length === 0)) {
+            const nonAppTypeFilters = showFilters.filter(
+              (f) => f.Category !== "AppType"
+            );
+            return (
+              nonAppTypeFilters.length === 0 ||
+              appHasAllFilters(app, nonAppTypeFilters)
+            );
+          }
+
+          return appHasAllFilters(app, showFilters);
+        });
 
         return selectedApps;
       }
