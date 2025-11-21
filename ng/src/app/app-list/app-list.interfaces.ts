@@ -21,3 +21,13 @@ export interface AppListItem {
   UrlKey: string;
   Updated: Date;
 }
+
+export interface AppType {
+  Created: Date;
+  Id: number;
+  Modified: Date;
+  NameId: string;
+  Order?: number;
+  Teaser?: string;
+  Title?: string;
+}
