@@ -95,10 +95,9 @@ export class FilterOptionsService {
       );
 
       if (showUnselected) {
-        const unselectedApps = apps.filter(
+        return apps.filter(
           (app) => !appHasSomeFilters(app, this.selectedFilters)
         );
-        return unselectedApps;
       } else {
         const { showFilters, hideFilters, checkboxFilters } = splitFilters(
           this.selectedFilters
@@ -170,20 +169,21 @@ export class FilterOptionsService {
       new Array<FilterCategoryGroup>()
     );
 
-    // Capitalize the first letter of option titles and sort them alphabetically
+    // Capitalize titles, append teaser in parentheses, and sort
     tempGroup.forEach((group) => {
       group.Options = group.Options.map((option) => {
         if (option.Title) {
-          option.Title =
+          const cap =
             option.Title.charAt(0).toUpperCase() + option.Title.slice(1);
+          option.Title = option.Teaser ? `${cap} (${option.Teaser})` : cap;
         }
         return option;
       });
 
       if (group.Category === "AppType") {
         group.Options.sort((a, b) => {
-          const orderA = a.Order ?? 999;
-          const orderB = b.Order ?? 999;
+          const orderA = Number(a.Order ?? 999);
+          const orderB = Number(b.Order ?? 999);
           return orderA - orderB;
         });
       } else {

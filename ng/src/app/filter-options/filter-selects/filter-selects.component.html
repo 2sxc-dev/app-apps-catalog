@@ -17,7 +17,7 @@
           [formControlName]="selectGroup?.Category"
           [compareWith]="isSelected"
         >
-          <mat-option>Show all</mat-option>
+          <mat-option [value]="null">Show all</mat-option>
           @for (option of selectGroup?.Options; track option) {
             <mat-option
               [value]="option"
