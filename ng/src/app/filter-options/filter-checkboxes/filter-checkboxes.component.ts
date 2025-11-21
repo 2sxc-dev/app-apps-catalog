@@ -4,7 +4,12 @@ import {
   FilterCategoryGroup,
   FilterOption,
 } from "../filter-options.interfaces";
-import { FormGroup, FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {
+  FormGroup,
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+} from "@angular/forms";
 import { FilterOptionsService } from "../fiter-options.services";
 import { map } from "rxjs/operators";
 import { CheckboxIds } from "../filter-options.enums";
@@ -23,7 +28,7 @@ import { AsyncPipe, JsonPipe } from "@angular/common";
     MatCheckboxModule,
     MatTooltipModule,
     AsyncPipe,
-    JsonPipe
+    JsonPipe,
   ],
 })
 export class FilterCheckboxesComponent implements OnInit {
@@ -34,7 +39,7 @@ export class FilterCheckboxesComponent implements OnInit {
   // Definition of the form controlling the checkboxes
   public checkboxForm: FormGroup = new FormGroup({});
 
-  constructor(public filterService: FilterOptionsService) { }
+  constructor(public filterService: FilterOptionsService) {}
 
   ngOnInit() {
     // Fetch the checkbox groups and their options
@@ -45,14 +50,15 @@ export class FilterCheckboxesComponent implements OnInit {
           groups.map((group: FilterCategoryGroup) => {
             const checkboxOrderIds = [
               CheckboxIds.stabel,
-              CheckboxIds.template,
               CheckboxIds.tutorial,
               CheckboxIds.featueDemo,
               CheckboxIds.old,
             ];
-            const orderedOptions = checkboxOrderIds.map((id: number) =>
-              group.Options.find((option: FilterOption) => option.Id === id)
-            );
+            const orderedOptions = checkboxOrderIds
+              .map((id: number) =>
+                group.Options.find((option: FilterOption) => option.Id === id)
+              )
+              .filter(Boolean) as FilterOption[]; // drop any missing entries
             group.Options = orderedOptions;
             return group;
           })
@@ -70,11 +76,6 @@ export class FilterCheckboxesComponent implements OnInit {
                 option.Tag = "Stable";
               }
 
-              if (option.Id === CheckboxIds.template) {
-                option.Tooltip = option.Title;
-                option.Tag = "Template";
-              }
-
               return option;
             });
             return group;
@@ -83,7 +84,6 @@ export class FilterCheckboxesComponent implements OnInit {
       )
       .subscribe((groups: FilterCategoryGroup[]) => {
         // Add checkboxes to the form
-
         groups.forEach((group: FilterCategoryGroup) =>
           group.Options.forEach((option: FilterOption) => {
             // Set 'old' checkbox to true
@@ -95,7 +95,6 @@ export class FilterCheckboxesComponent implements OnInit {
             );
           })
         );
-
       });
   }
 
