@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { Observable } from "rxjs";
+import { Component, OnInit, Input, OnDestroy } from "@angular/core";
+import { Observable, Subscription } from "rxjs";
 import {
   FilterCategoryGroup,
   FilterOption,
@@ -11,10 +11,7 @@ import {
   ReactiveFormsModule,
 } from "@angular/forms";
 import { FilterOptionsService } from "../fiter-options.services";
-import {
-  MatOptionSelectionChange,
-  MatOptionModule,
-} from "@angular/material/core";
+import { MatOptionModule } from "@angular/material/core";
 import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { NgClass, AsyncPipe } from "@angular/common";
@@ -34,38 +31,63 @@ import { NgClass, AsyncPipe } from "@angular/common";
     AsyncPipe,
   ],
 })
-export class FilterSelectsComponent implements OnInit {
+export class FilterSelectsComponent implements OnInit, OnDestroy {
   @Input() titlePrefix: string = null;
   @Input() selectGroups$: Observable<FilterCategoryGroup[]> = null;
 
-  // Define the form to handle selection
   public selectForm: FormGroup = new FormGroup({});
+  private selectGroups: FilterCategoryGroup[] = [];
+  private subscription = new Subscription();
 
   constructor(private filterService: FilterOptionsService) {}
 
   ngOnInit() {
-    // Subscribe to the selectGroups$ observable to fetch filter categories
-    this.selectGroups$.subscribe((groups: FilterCategoryGroup[]) => {
-      groups.forEach((group: FilterCategoryGroup) => {
-        // Add a form control for each filter category
-        this.selectForm.addControl(group.Category, new FormControl(false));
-      });
-    });
+    this.subscription.add(
+      this.selectGroups$.subscribe((groups: FilterCategoryGroup[]) => {
+        this.selectGroups = groups;
+
+        groups.forEach((group: FilterCategoryGroup) => {
+          if (!this.selectForm.get(group.Category)) {
+            const defaultValue =
+              group.Category === "AppType" && group.Options?.length > 1
+                ? group.Options[1]
+                : null;
+
+            const control = new FormControl(defaultValue);
+            this.selectForm.addControl(group.Category, control);
+
+            if (defaultValue) {
+              this.filterService.setFilter(defaultValue);
+            }
+
+            this.subscription.add(
+              control.valueChanges.subscribe(
+                (selectedOption: FilterOption | null) => {
+                  const currentGroup = this.selectGroups.find(
+                    (g) => g.Category === group.Category
+                  );
+                  if (currentGroup) {
+                    currentGroup.Options.forEach((option) =>
+                      this.filterService.removeFilter(option)
+                    );
+                    if (selectedOption) {
+                      this.filterService.setFilter(selectedOption);
+                    }
+                  }
+                }
+              )
+            );
+          }
+        });
+      })
+    );
   }
 
-  // Handle filter selection when a MatOption is changed
-  handleFilterSelection(event: MatOptionSelectionChange) {
-    if (event.source.selected) {
-      // Set the filter if the option is selected
-      this.filterService.setFilter(event.source.value);
-    } else {
-      // Remove the filter if the option is deselected
-      this.filterService.removeFilter(event.source.value);
-    }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
-  // Check if a filter option is selected
-  isSelected(select: FilterOption, option: FilterOption) {
-    return option && option.Id === select.Id;
+  compareOptions(option1: FilterOption, option2: FilterOption): boolean {
+    return option1 && option2 ? option1.Id === option2.Id : option1 === option2;
   }
 }
