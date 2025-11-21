@@ -1,17 +1,29 @@
 <form [formGroup]="checkboxForm">
   @for (checkboxGroup of checkboxGroups$ | async; track checkboxGroup) {
-  <div class="d-flex justify-content-between flex-wrap flex-column flex-md-row filter-checkbox-container">
-    <mat-checkbox [checked]="!areSomeCheckboxesSelected()" [disabled]="!areSomeCheckboxesSelected()"
-      (change)="showAll()">Show all</mat-checkbox>
-    @for (option of checkboxGroup?.Options; track option) {
-    @if (!option) {
-    {{ option | json }}
-    }
-    <mat-checkbox [class.disable]="option?.Disabled" [formControlName]="option?.Title"
-      (change)="toggleCheckbox(option, $event?.checked)" matTooltip="{{ option?.Tooltip }}">
-      {{ option?.Tag }}
-    </mat-checkbox>
-    }
-  </div>
+    <div
+      class="d-flex justify-content-between flex-wrap flex-column flex-md-row filter-checkbox-container"
+    >
+      <mat-checkbox
+        [checked]="!areSomeCheckboxesSelected()"
+        [disabled]="!areSomeCheckboxesSelected()"
+        (change)="showAll()"
+      >
+        Show all
+      </mat-checkbox
+      >
+      @for (option of checkboxGroup?.Options; track option)
+        { @if (!option) {
+          {{ option | json }}
+        }
+        <mat-checkbox
+          [class.disable]="option?.Disabled"
+          [formControlName]="option?.Title"
+          (change)="toggleCheckbox(option, $event?.checked)"
+          matTooltip="{{ option?.Tooltip }}"
+        >
+          {{ option?.Tag }}
+        </mat-checkbox>
+      }
+    </div>
   }
 </form>

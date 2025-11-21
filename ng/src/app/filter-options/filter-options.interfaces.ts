@@ -8,17 +8,5 @@ export interface FilterOption extends AppListItemTag {
 
 export interface FilterCategoryGroup {
   Category: string;
-  Options: Array<Option>;
-}
-
-interface Option {
-  Category: string;
-  Disabled: boolean;
-  Id: number;
-  ShowApps: boolean;
-  Tag: string;
-  Title: string;
-  Tooltip: string;
-  Order?: number;
-  Teaser?: string;
+  Options: Array<FilterOption>;
 }
