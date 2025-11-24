@@ -50,7 +50,7 @@ export class FilterSelectsComponent implements OnInit, OnDestroy {
           if (!this.selectForm.get(group.Category)) {
             const defaultValue =
               group.Category === "AppType" && group.Options?.length > 1
-                ? group.Options[1]
+                ? group.Options[0]
                 : null;
 
             const control = new FormControl(defaultValue);
