@@ -4,6 +4,7 @@
 
 1. Run `npm run local-ssl` to build the project.
 1. Visit [2sxc.org/en/apps](https://2sxc.org/en/apps/)
+1. If your browser is not trusting the local files visit [static file](https://localhost:4200/favicon.ico), go to Advanced > Proceed > Trust ...
 1. Switch the **Edition** to **local** *(at the bottom of the page)*
 
 ## Deployment
@@ -11,6 +12,10 @@
 TODO
 
 ## History
+
+### 2025-11-25
+
+1. 2pp: Update Angular version from 17 to 18
 
 ### 2025-11-20
 

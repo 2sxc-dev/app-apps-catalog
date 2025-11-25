@@ -1,6 +1,5 @@
 <div class="container" [ngClass]="{'old-app-container' : app?.Type?.Id === appTypeIds.old}">
   <!-- wird verwendet, wenn es über Routing auf die Detail weiter geleitet wird -->
-  <!-- <a routerLink="/details/{{ app.Id }}" class="stretched-link"> -->
   <a href="details/app/{{ app.UrlKey }}" class="stretched-link">
     <div class="row align-items-center w-100 item d-flex flex-wrap justify-content-center py-2 py-md-2">
       <!-- Image links -->
