@@ -4,7 +4,7 @@ import { map } from "rxjs/operators";
 import { AppListItem, AppListItemTag } from "./app-list.interfaces";
 import { FilterOptionsService } from "../filter-options/fiter-options.services";
 import { AppTypeIds } from "./app-list.enums";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import { AppListItemComponent } from "./app-list-item/app-list-item.component";
 import { NgClass, AsyncPipe } from "@angular/common";
 import { MatCardModule } from "@angular/material/card";
