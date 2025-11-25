@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, ViewChild } from "@angular/core";
 import { AppTypeIds } from "../app-list.enums";
-import { NgClass, NgFor, NgStyle } from "@angular/common";
+import { NgClass, NgStyle } from "@angular/common";
 import { AppListItem } from "../app-list.interfaces";
 
 @Component({
