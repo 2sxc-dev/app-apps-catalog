@@ -13,19 +13,13 @@ import { MatCardModule } from "@angular/material/card";
   selector: "app-list",
   templateUrl: "./app-list.component.html",
   styleUrls: ["./app-list.component.scss"],
-  standalone: true,
-  imports: [
-    MatCardModule,
-    AppListItemComponent,
-    NgClass,
-    AsyncPipe
-  ],
+  imports: [MatCardModule, AppListItemComponent, NgClass, AsyncPipe],
 })
 export class AppListComponent implements OnInit {
   // Observable to store the main of apps
   public appList: Observable<AppListItem[]> = null;
 
-  constructor(private filterService: FilterOptionsService) { }
+  constructor(private filterService: FilterOptionsService) {}
 
   ngOnInit() {
     // Subscribe to the filtered app main observable and apply transformations
@@ -91,7 +85,6 @@ export class AppListComponent implements OnInit {
    * @returns The sorted array of apps based on their type weight and last updated date.
    */
   sortByTypeWeightAndDate(apps: AppListItem[]) {
-
     // Sort the apps first by their weight, which consists of the sum of IsNew and the weight of their tags,
     // then by their last updated date, favoring newer dates.
     return apps.sort((a, b) => {
@@ -107,18 +100,19 @@ export class AppListComponent implements OnInit {
       // and assign a weight to the comparison result. If validDatesExist is false,
       // set a default weight of -1 to indicate that the dates are not valid.
       const dateWeight = validDatesExist
-        ? +secondAppUpdatedDate.isAfter(firstAppUpdatedDate) || +secondAppUpdatedDate.isSame(firstAppUpdatedDate) - 1
+        ? +secondAppUpdatedDate.isAfter(firstAppUpdatedDate) ||
+          +secondAppUpdatedDate.isSame(firstAppUpdatedDate) - 1
         : -1;
 
       // Calculate the weight of each app based on its properties and the date weight.
       // The weight consists of the sum of the 'IsNew' property and the 'Weight' property of the app's type.
       // For app 'b', the date weight is also included in the calculation.
       const firstAppWeight = +a.IsNew + a.Type.Weight; // From Tag
-      const secondAppWeight = +b.IsNew + b.Type.Weight /** From Tag*/ + dateWeight // Calculate the weight of the second app based on its properties and the date weight;
+      const secondAppWeight =
+        +b.IsNew + b.Type.Weight /** From Tag*/ + dateWeight; // Calculate the weight of the second app based on its properties and the date weight;
 
       // Sort apps in descending order of weight.
       return secondAppWeight - firstAppWeight;
     });
   }
-
 }

@@ -11,7 +11,6 @@ import { MatExpansionModule } from "@angular/material/expansion";
   selector: "app-filter-options",
   templateUrl: "./filter-options.component.html",
   styleUrls: ["./filter-options.component.scss"],
-  standalone: true,
   imports: [
     MatExpansionModule,
     FilterCheckboxesComponent,

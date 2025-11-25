@@ -20,7 +20,6 @@ import { NgClass, AsyncPipe } from "@angular/common";
   selector: "app-filter-selects",
   templateUrl: "./filter-selects.component.html",
   styleUrls: ["./filter-selects.component.scss"],
-  standalone: true,
   imports: [
     FormsModule,
     ReactiveFormsModule,

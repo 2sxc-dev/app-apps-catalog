@@ -7,35 +7,29 @@ import { AppListItem } from "../app-list.interfaces";
   selector: "app-list-item",
   templateUrl: "./app-list-item.component.html",
   styleUrls: ["./app-list-item.component.scss"],
-  standalone: true,
-  imports: [
-    NgClass,
-    NgStyle,
-  ],
+  imports: [NgClass, NgStyle],
 })
 export class AppListItemComponent {
-  @ViewChild('tagsContainer') tagsContainer!: ElementRef;
+  @ViewChild("tagsContainer") tagsContainer!: ElementRef;
   isExpanded = false;
 
   public appTypeIds = AppTypeIds;
 
   @Input() app!: AppListItem;
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   toggleExpand() {
     this.isExpanded = !this.isExpanded;
-    if (!this.isExpanded)
-      this.checkElementHeight();
+    if (!this.isExpanded) this.checkElementHeight();
   }
 
   checkElementHeight() {
     const element = this.tagsContainer.nativeElement;
     if (element.scrollHeight > 60) {
-      element.classList.add('with-gradient');
+      element.classList.add("with-gradient");
     } else {
-      element.classList.remove('with-gradient');
+      element.classList.remove("with-gradient");
     }
   }
-
 }

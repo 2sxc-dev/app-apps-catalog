@@ -21,7 +21,6 @@ import { AsyncPipe, JsonPipe } from "@angular/common";
   selector: "app-filter-checkboxes",
   templateUrl: "./filter-checkboxes.component.html",
   styleUrls: ["./filter-checkboxes.component.scss"],
-  standalone: true,
   imports: [
     FormsModule,
     ReactiveFormsModule,
