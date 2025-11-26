@@ -1,18 +1,23 @@
-import { Component, computed } from "@angular/core";
+import { Component, computed, inject } from "@angular/core";
 import { AppListItem, AppListItemTag } from "./app-list.interfaces";
 import { FilterOptionsService } from "../filter-options/fiter-options.services";
+import { DataService } from "../data-service/data.service";
 import { AppTypeIds } from "./app-list.enums";
 import dayjs from "dayjs";
 import { AppListItemComponent } from "./app-list-item/app-list-item.component";
 import { MatCardModule } from "@angular/material/card";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 @Component({
   selector: "app-list",
   templateUrl: "./app-list.component.html",
-  imports: [MatCardModule, AppListItemComponent],
+  imports: [MatCardModule, MatProgressSpinnerModule, AppListItemComponent],
 })
 export class AppListComponent {
-  // computed signal that returns the categorized & sorted apps
+  filterService = inject(FilterOptionsService);
+  dataService = inject(DataService);
+
+  // computed signal that returns the categorized & sorted apps (derived from filtered signal)
   public appList = computed(() => {
     const apps = this.filterService.appListFilteredSig();
     // Clone apps and their tag arrays to avoid mutating service data
@@ -25,7 +30,15 @@ export class AppListComponent {
     return this.sortByTypeWeightAndDate(categorized);
   });
 
-  constructor(private filterService: FilterOptionsService) {}
+  // loading: true while initial data is being fetched (no apps & no tags available yet)
+  public loading = computed(() => {
+    const apps = this.dataService.appListSig();
+    const tags = this.dataService.tagListSig();
+    // consider loading when both are empty/undefined — this avoids showing spinner for an empty filtered result
+    return (!apps || apps.length === 0) && (!tags || tags.length === 0);
+  });
+
+  constructor() {}
 
   // Function to categorize apps based on their tags
   categorize(apps: AppListItem[]) {
