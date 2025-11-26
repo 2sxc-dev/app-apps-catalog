@@ -1,4 +1,12 @@
-import { Component, ElementRef, input, ViewChild } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  input,
+  ViewChild,
+  AfterViewInit,
+  ChangeDetectorRef,
+  inject,
+} from "@angular/core";
 import { AppTypeIds } from "../app-list.enums";
 import { NgClass, NgStyle } from "@angular/common";
 import { AppListItem } from "../app-list.interfaces";
@@ -9,9 +17,11 @@ import { AppListItem } from "../app-list.interfaces";
   styleUrls: ["./app-list-item.component.scss"],
   imports: [NgClass, NgStyle],
 })
-export class AppListItemComponent {
+export class AppListItemComponent implements AfterViewInit {
   @ViewChild("tagsContainer") tagsContainer!: ElementRef;
-  
+
+  cdr = inject(ChangeDetectorRef);
+
   isExpanded = false;
 
   public appTypeIds = AppTypeIds;
@@ -19,6 +29,11 @@ export class AppListItemComponent {
   app = input.required<AppListItem>();
 
   ngOnInit() {}
+
+  ngAfterViewInit() {
+    this.checkElementHeight();
+    this.cdr.detectChanges();
+  }
 
   toggleExpand() {
     this.isExpanded = !this.isExpanded;
