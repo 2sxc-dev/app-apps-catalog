@@ -1,5 +1,8 @@
 <form [formGroup]="checkboxForm">
-  @for (checkboxGroup of checkboxGroups$ | async; track checkboxGroup) {
+  @for (
+    checkboxGroup of checkboxGroupsSig();
+    track checkboxGroup
+  ) {
     <div
       class="d-flex justify-content-between flex-wrap flex-column flex-md-row filter-checkbox-container"
     >
@@ -11,15 +14,18 @@
         Show all
       </mat-checkbox
       >
-      @for (option of checkboxGroup?.Options; track option)
-        { @if (!option) {
+      @for (
+        option of checkboxGroup?.Options;
+        track option
+      ) {
+        @if (!option) {
           {{ option | json }}
         }
         <mat-checkbox
           [class.disable]="option?.Disabled"
           [formControlName]="option?.Title"
           (change)="toggleCheckbox(option, $event?.checked)"
-          matTooltip="{{ option?.Tooltip }}"
+          [matTooltip]="option?.Tooltip"
         >
           {{ option?.Tag }}
         </mat-checkbox>

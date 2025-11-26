@@ -5,8 +5,7 @@
     [titlePrefix]="titlePrefix"
   ></app-filter-selects>
   <app-filter-checkboxes
-    [checkboxGroups$]="filterCheckboxes$"
-    [titlePrefix]="titlePrefix"
+    [checkboxGroupsSig]="filterCheckboxesSig()"
   ></app-filter-checkboxes>
 </div>
 
@@ -24,8 +23,7 @@
       [titlePrefix]="titlePrefix"
     ></app-filter-selects>
     <app-filter-checkboxes
-      [checkboxGroups$]="filterCheckboxes$"
-      [titlePrefix]="titlePrefix"
+      [checkboxGroupsSig]="filterCheckboxesSig()"
     ></app-filter-checkboxes>
   </mat-expansion-panel>
 </div>
