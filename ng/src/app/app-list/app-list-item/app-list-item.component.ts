@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from "@angular/core";
+import { Component, ElementRef, input, ViewChild } from "@angular/core";
 import { AppTypeIds } from "../app-list.enums";
 import { NgClass, NgStyle } from "@angular/common";
 import { AppListItem } from "../app-list.interfaces";
@@ -11,11 +11,12 @@ import { AppListItem } from "../app-list.interfaces";
 })
 export class AppListItemComponent {
   @ViewChild("tagsContainer") tagsContainer!: ElementRef;
+  
   isExpanded = false;
 
   public appTypeIds = AppTypeIds;
 
-  @Input() app!: AppListItem;
+  app = input.required<AppListItem>();
 
   ngOnInit() {}
 

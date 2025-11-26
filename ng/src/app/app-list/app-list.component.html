@@ -1,13 +1,13 @@
 <mat-card class="p-0">
   @for (
-    app of appList | async;
+    app of appList();
     track app;
   ) {
     <app-list-item [app]="app" />
   }
 </mat-card>
 
-@if ((appList | async)?.length === 0) {
+@if ((appList())?.length === 0) {
   <div class="alert alert-primary" role="alert">
     No Apps for this selection
   </div>

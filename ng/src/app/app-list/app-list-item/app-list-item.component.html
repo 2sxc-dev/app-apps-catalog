@@ -1,30 +1,47 @@
-<div class="container" [ngClass]="{'old-app-container' : app?.Type?.Id === appTypeIds.old}">
+<div
+  class="container"
+  [ngClass]="{
+    'old-app-container': app().Type?.Id === appTypeIds.old
+  }"
+>
   <!-- wird verwendet, wenn es über Routing auf die Detail weiter geleitet wird -->
-  <a href="details/app/{{ app.UrlKey }}" class="stretched-link">
-    <div class="row align-items-center w-100 item d-flex flex-wrap justify-content-center py-2 py-md-2">
+  <a
+    href="details/app/{{ app().UrlKey }}"
+    class="stretched-link"
+  >
+    <div
+      class="row align-items-center w-100 item d-flex flex-wrap justify-content-center py-2 py-md-2"
+    >
       <!-- Image links -->
       <div class="col-6 col-sm-2 col-lg-1 mb-2 mb-lg-0">
-        <img class="img-fluid" [src]="app?.Icon" />
+        <img class="img-fluid" [src]="app().Icon" />
       </div>
 
       <!-- Content -->
       <div class="col-12 col-sm-10 col-lg-7 mb-2 mb-md-0">
-        <h4 style="margin-bottom: 4px;">
-          {{ app?.Name }}
-          @if (!!app?.Type?.Title) {
-          <span class="ml-2 type" [ngClass]="{
-              stable: app?.Type?.Id === appTypeIds.stable,
-              top: app?.Type?.Id === appTypeIds.top,
-              old: app?.Type?.Id === appTypeIds.old
-            }">
-            {{ app?.Type?.Title }}</span>
-          }
-          @if (app?.IsNew) {
-          <span class="type new" [ngStyle]="{ 'margin-left.px': !!app?.Type ? 2 : 10 }">New</span>
+        <h4 style="margin-bottom: 4px">
+          {{ app().Name }}
+          @if (!!app().Type?.Title) {
+          <span
+            class="ml-2 type"
+            [ngClass]="{
+              stable: app().Type?.Id === appTypeIds.stable,
+              top: app().Type?.Id === appTypeIds.top,
+              old: app().Type?.Id === appTypeIds.old
+            }"
+          >
+            {{ app().Type?.Title }}</span
+          >
+          } @if (app().IsNew) {
+          <span
+            class="type new"
+            [ngStyle]="{ 'margin-left.px': !!app().Type ? 2 : 10 }"
+            >New</span
+          >
           }
         </h4>
         <div class="short-description">
-          <p class="mb-0" [innerHTML]="app?.ShortDescription"></p>
+          <p class="mb-0" [innerHTML]="app().ShortDescription"></p>
         </div>
       </div>
 
@@ -32,11 +49,21 @@
       <div class="col-12 col-lg-4 tag-custom">
         <!-- Show Tags, if more then 2 Tags Rows, set a gradient and click to show the other Tags-->
         <a href="javascript:void(0)">
-          <div class="d-flex flex-wrap" [ngClass]="{ 'with-gradient': tagsContainer.scrollHeight > 60 && !isExpanded }"
-            [ngStyle]="{ 'max-height': isExpanded ? 'none' : 'calc(60px + 0.25rem)', 'overflow': 'hidden' }"
-            #tagsContainer (click)="toggleExpand()" style="gap: 0.35rem; cursor: pointer;">
+          <div
+            class="d-flex flex-wrap"
+            [ngClass]="{
+              'with-gradient': tagsContainer.scrollHeight > 60 && !isExpanded
+            }"
+            [ngStyle]="{
+              'max-height': isExpanded ? 'none' : 'calc(60px + 0.25rem)',
+              overflow: 'hidden'
+            }"
+            #tagsContainer
+            (click)="toggleExpand()"
+            style="gap: 0.35rem; cursor: pointer"
+          >
             <!-- Get all Tags as Badge -->
-            @for (tag of app?.Tags; track tag) {
+            @for (tag of app().Tags; track tag) {
             <span class="badge bg-secondary tags m-0">
               {{ tag?.Title }}
             </span>
@@ -44,7 +71,6 @@
           </div>
         </a>
       </div>
-
     </div>
   </a>
 </div>

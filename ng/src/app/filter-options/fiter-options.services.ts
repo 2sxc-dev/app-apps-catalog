@@ -1,7 +1,6 @@
-import { Injectable, signal } from "@angular/core";
+import { effect, Injectable, signal } from "@angular/core";
 import { DataService } from "../data-service/data.service";
 import { FilterCategoryGroup, FilterOption } from "./filter-options.interfaces";
-import { Subject } from "rxjs";
 import { CheckboxIds } from "./filter-options.enums";
 import { AppListItem, AppListItemTag } from "../app-list/app-list.interfaces";
 
@@ -13,47 +12,50 @@ export class FilterOptionsService {
   // Array to store tag list
   private tagList: AppListItemTag[] = [];
 
-  // Subject to emit filter groups
-  public filterGroups: Subject<FilterCategoryGroup[]> = new Subject<
-    FilterCategoryGroup[]
-  >();
-
-  // Signal variant for filter groups
+  // Signal for filter groups
   public filterGroupsSig = signal<FilterCategoryGroup[]>([]);
 
   // Array to store the list of apps
   private appList: AppListItem[] = [];
 
-  // Subject to emit filtered app list
-  public appListFiltered: Subject<AppListItem[]> = new Subject<AppListItem[]>();
-
-  // Signal variant for filtered app list
+  // Signal for filtered app list
   public appListFilteredSig = signal<AppListItem[]>([]);
+
+  // flag to only run selectOnInit once
+  private _initialized = false;
 
   constructor(private dataService: DataService) {
     // Initial selection of filters
     const selectOnInit = [CheckboxIds.old];
 
-    // Subscribe to the appList and tagList observables
-    this.dataService.appList.subscribe((appList: AppListItem[]) => {
+    // React to app list signal changes
+    effect(() => {
+      const appList = this.dataService.appListSig();
+      if (!appList) return;
       this.appList = appList;
       this.filterAppList(appList);
     });
 
-    this.dataService.tagList.subscribe((tagList: AppListItemTag[]) => {
+    // React to tag list signal changes
+    effect(() => {
+      const tagList = this.dataService.tagListSig();
+      if (!tagList) return;
+
       this.tagList = tagList;
 
       // Create filter groups and set initial filters
       const groups = this.createFilterGroups(tagList, this.appList);
-      this.filterGroups.next(groups);
       this.filterGroupsSig.set(groups);
-    
 
-      selectOnInit.forEach((selectId) => {
-        const select = this.tagList.find((tag) => tag.Id === selectId);
-        const option = this.createFilterOption(select);
-        this.setFilter(option);
-      });
+      if (!this._initialized) {
+        this._initialized = true;
+        selectOnInit.forEach((selectId) => {
+          const select = this.tagList.find((tag) => tag.Id === selectId);
+          if (!select) return;
+          const option = this.createFilterOption(select);
+          this.setFilter(option);
+        });
+      }
     });
   }
 
@@ -92,7 +94,11 @@ export class FilterOptionsService {
           }
           return obj;
         },
-        { showFilters: [], hideFilters: [], checkboxFilters: [] }
+        {
+          showFilters: [] as FilterOption[],
+          hideFilters: [] as FilterOption[],
+          checkboxFilters: [] as FilterOption[],
+        }
       );
 
     // Function to filter apps based on selected filters
@@ -151,9 +157,7 @@ export class FilterOptionsService {
         ? this.createFilterGroups(this.tagList, filteredApps)
         : this.createFilterGroups(this.tagList, this.appList);
 
-    this.filterGroups.next(filteredTags);
     this.filterGroupsSig.set(filteredTags);
-    this.appListFiltered.next(filteredApps);
     this.appListFilteredSig.set(filteredApps);
   }
 
@@ -221,15 +225,7 @@ export class FilterOptionsService {
 
   // Function to create a filter option
   private createFilterOption(tag: AppListItemTag, disabled: boolean = false) {
-    const {
-      Id,
-      Tag,
-      Title,
-      Category,
-      Weight,
-      Order,
-      Teaser
-    } = tag;
+    const { Id, Tag, Title, Category, Weight, Order, Teaser } = tag;
 
     let show = true;
 

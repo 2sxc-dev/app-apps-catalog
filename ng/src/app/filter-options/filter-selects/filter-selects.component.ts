@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, OnDestroy, input, inject, effect } from "@angular/core";
-import { Observable, Subscription } from "rxjs";
+import { Component, OnDestroy, input, inject, effect } from "@angular/core";
+import { Subscription } from "rxjs";
 import {
   FilterCategoryGroup,
   FilterOption,
