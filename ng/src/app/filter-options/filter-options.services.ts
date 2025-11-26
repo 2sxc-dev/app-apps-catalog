@@ -1,4 +1,4 @@
-import { effect, Injectable, signal } from "@angular/core";
+import { computed, Injectable, signal } from "@angular/core";
 import { DataService } from "../data-service/data.service";
 import { FilterCategoryGroup, FilterOption } from "./filter-options.interfaces";
 import { CheckboxIds } from "./filter-options.enums";
@@ -6,64 +6,63 @@ import { AppListItem, AppListItemTag } from "../app-list/app-list.interfaces";
 
 @Injectable({ providedIn: "root" })
 export class FilterOptionsService {
-  // Array to store selected filters
-  public selectedFilters: FilterOption[] = [];
-
-  // Array to store tag list
-  private tagList: AppListItemTag[] = [];
-
-  // Signal for filter groups
-  public filterGroupsSig = signal<FilterCategoryGroup[]>([]);
-
-  // Array to store the list of apps
-  private appList: AppListItem[] = [];
-
-  // Signal for filtered app list
-  public appListFilteredSig = signal<AppListItem[]>([]);
-
-  // flag to only run selectOnInit once
-  private _initialized = false;
+  // Writable signal to store selected filters
+  public selectedFilters = signal<FilterOption[]>([]);
 
   constructor(private dataService: DataService) {
-    // Initial selection of filters
-    const selectOnInit = [CheckboxIds.old];
-
-    // React to app list signal changes
-    effect(() => {
-      const appList = this.dataService.appListSig();
-      if (!appList) return;
-      this.appList = appList;
-      this.filterAppList(appList);
-    });
-
-    // React to tag list signal changes
-    effect(() => {
+    // Set initial filters when tag list is available
+    const initFilters = computed(() => {
       const tagList = this.dataService.tagListSig();
-      if (!tagList) return;
+      if (tagList.length === 0) return;
 
-      this.tagList = tagList;
+      const selectOnInit = [CheckboxIds.old];
+      const initialFilters: FilterOption[] = [];
 
-      // Create filter groups and set initial filters
-      const groups = this.createFilterGroups(tagList, this.appList);
-      this.filterGroupsSig.set(groups);
-
-      if (!this._initialized) {
-        this._initialized = true;
-        selectOnInit.forEach((selectId) => {
-          const select = this.tagList.find((tag) => tag.Id === selectId);
-          if (!select) return;
+      selectOnInit.forEach((selectId) => {
+        const select = tagList.find((tag) => tag.Id === selectId);
+        if (select) {
           const option = this.createFilterOption(select);
-          this.setFilter(option);
-        });
+          initialFilters.push(option);
+        }
+      });
+
+      // Only set once
+      if (this.selectedFilters().length === 0 && initialFilters.length > 0) {
+        this.selectedFilters.set(initialFilters);
       }
     });
+
+    // Trigger the initialization (read the computed to activate it)
+    initFilters();
   }
 
+  // Computed signal for filtered app list
+  public appListFilteredSig = computed<AppListItem[]>(() => {
+    const appList = this.dataService.appListSig();
+    const filters = this.selectedFilters();
+
+    if (filters.length === 0) return appList;
+
+    return this.filterAppList(appList, filters);
+  });
+
+  // Computed signal for filter groups
+  public filterGroupsSig = computed<FilterCategoryGroup[]>(() => {
+    const tagList = this.dataService.tagListSig();
+    const filteredApps = this.appListFilteredSig();
+    const appList = this.dataService.appListSig();
+
+    const appsToConsider = filteredApps.length > 0 ? filteredApps : appList;
+    return this.createFilterGroups(tagList, appsToConsider);
+  });
+
   // Function to filter the app list based on selected filters
-  public filterAppList(appList: AppListItem[] = this.appList) {
+  private filterAppList(
+    appList: AppListItem[],
+    filters: FilterOption[]
+  ): AppListItem[] {
     // Helper functions to check if an app has certain filters
     const appHasFilter = (app: AppListItem, filter: FilterOption) => {
-      // Check both Tags and AppType arrays for matching tag Id
       const tags = (app.Tags || []).concat(app.AppType || []);
       return tags.some((tag) => filter.Id === tag.Id);
     };
@@ -101,64 +100,45 @@ export class FilterOptionsService {
         }
       );
 
-    // Function to filter apps based on selected filters
-    const filterApps = (apps: AppListItem[]) => {
-      // If only filters with ShowApps=false are selected, show the unselected apps
-      const showUnselected = this.selectedFilters.every(
-        (filter) => !filter.ShowApps
+    // If only filters with ShowApps=false are selected, show the unselected apps
+    const showUnselected = filters.every((filter) => !filter.ShowApps);
+
+    if (showUnselected) {
+      return appList.filter((app) => !appHasSomeFilters(app, filters));
+    } else {
+      const { showFilters, hideFilters, checkboxFilters } =
+        splitFilters(filters);
+
+      const onlyShowApps = appList.filter(
+        (app) => !appHasSomeFilters(app, hideFilters)
       );
+      const checkboxApps =
+        checkboxFilters.length > 0
+          ? onlyShowApps.filter((app) =>
+              appHasSomeFilters(app, checkboxFilters)
+            )
+          : onlyShowApps;
 
-      if (showUnselected) {
-        return apps.filter(
-          (app) => !appHasSomeFilters(app, this.selectedFilters)
-        );
-      } else {
-        const { showFilters, hideFilters, checkboxFilters } = splitFilters(
-          this.selectedFilters
-        );
+      // Include apps with no AppType if "Apps" filter is selected
+      const hasAppFilter = showFilters.some((f) => f.Id === 69327);
 
-        const onlyShowApps = apps.filter(
-          (app) => !appHasSomeFilters(app, hideFilters)
-        );
-        const checkboxApps =
-          checkboxFilters.length > 0
-            ? onlyShowApps.filter((app) =>
-                appHasSomeFilters(app, checkboxFilters)
-              )
-            : onlyShowApps;
+      const selectedApps = checkboxApps.filter((app) => {
+        // If "Apps" filter is active and app has empty AppType, check non-AppType filters only
+        if (hasAppFilter && (!app.AppType || app.AppType.length === 0)) {
+          const nonAppTypeFilters = showFilters.filter(
+            (f) => f.Category !== "AppType"
+          );
+          return (
+            nonAppTypeFilters.length === 0 ||
+            appHasAllFilters(app, nonAppTypeFilters)
+          );
+        }
 
-        // Include apps with no AppType if "Apps" filter is selected
-        const hasAppFilter = showFilters.some((f) => f.Id === 69327);
+        return appHasAllFilters(app, showFilters);
+      });
 
-        const selectedApps = checkboxApps.filter((app) => {
-          // If "Apps" filter is active and app has empty AppType, check non-AppType filters only
-          if (hasAppFilter && (!app.AppType || app.AppType.length === 0)) {
-            const nonAppTypeFilters = showFilters.filter(
-              (f) => f.Category !== "AppType"
-            );
-            return (
-              nonAppTypeFilters.length === 0 ||
-              appHasAllFilters(app, nonAppTypeFilters)
-            );
-          }
-
-          return appHasAllFilters(app, showFilters);
-        });
-
-        return selectedApps;
-      }
-    };
-
-    // Apply filters to the app list and emit the filtered app list and filter groups
-    const filteredApps =
-      this.selectedFilters.length > 0 ? filterApps(appList) : appList;
-    const filteredTags =
-      filteredApps.length > 0
-        ? this.createFilterGroups(this.tagList, filteredApps)
-        : this.createFilterGroups(this.tagList, this.appList);
-
-    this.filterGroupsSig.set(filteredTags);
-    this.appListFilteredSig.set(filteredApps);
+      return selectedApps;
+    }
   }
 
   // Function to create filter groups based on tag list and app list
@@ -250,25 +230,20 @@ export class FilterOptionsService {
 
   // Function to set a filter
   public setFilter(filter: FilterOption) {
-    const isAlreadyFiltered = this.selectedFilters.some(
+    const current = this.selectedFilters();
+    const isAlreadyFiltered = current.some(
       (selected) => selected.Id === filter.Id
     );
 
     if (!isAlreadyFiltered) {
-      this.selectedFilters.push(filter);
-      this.filterAppList();
+      this.selectedFilters.set([...current, filter]);
     }
   }
 
   // Function to remove a filter
   public removeFilter(filter: FilterOption) {
-    const index = this.selectedFilters.findIndex(
-      (selected) => selected.Id === filter.Id
-    );
-
-    if (index > -1) {
-      this.selectedFilters.splice(index, 1);
-      this.filterAppList();
-    }
+    const current = this.selectedFilters();
+    const filtered = current.filter((selected) => selected.Id !== filter.Id);
+    this.selectedFilters.set(filtered);
   }
 }

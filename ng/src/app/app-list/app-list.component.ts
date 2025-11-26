@@ -1,6 +1,6 @@
 import { Component, computed, inject } from "@angular/core";
 import { AppListItem, AppListItemTag } from "./app-list.interfaces";
-import { FilterOptionsService } from "../filter-options/fiter-options.services";
+import { FilterOptionsService } from "../filter-options/filter-options.services";
 import { DataService } from "../data-service/data.service";
 import { AppTypeIds } from "./app-list.enums";
 import dayjs from "dayjs";

@@ -1,16 +1,10 @@
-import { Component, OnDestroy, input, inject, effect } from "@angular/core";
-import { Subscription } from "rxjs";
+import { Component, input, inject, computed, effect } from "@angular/core";
 import {
   FilterCategoryGroup,
   FilterOption,
 } from "../filter-options.interfaces";
-import {
-  FormGroup,
-  FormControl,
-  FormsModule,
-  ReactiveFormsModule,
-} from "@angular/forms";
-import { FilterOptionsService } from "../fiter-options.services";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FilterOptionsService } from "../filter-options.services";
 import { MatOptionModule } from "@angular/material/core";
 import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -27,62 +21,60 @@ import { MatFormFieldModule } from "@angular/material/form-field";
     MatOptionModule,
   ],
 })
-export class FilterSelectsComponent implements OnDestroy {
+export class FilterSelectsComponent {
   filterService = inject(FilterOptionsService);
 
-  // Signal für synchronen Input
   selectGroups = input.required<FilterCategoryGroup[]>();
   titlePrefix = input<string>("");
 
-  public selectForm: FormGroup = new FormGroup({});
-  private subscription = new Subscription();
+  initializedDefaults = new Set<string>();
 
   constructor() {
-    // Effekt reagiert automatisch auf Änderungen von selectGroups
     effect(() => {
-      const groups = this.selectGroups();
-
-      if (!groups || groups.length === 0) return;
-
-      groups.forEach((group: FilterCategoryGroup) => {
-        // Control nur erstellen, wenn es noch nicht existiert
-        if (!this.selectForm.get(group.Category)) {
-          const defaultValue =
-            group.Category === "AppType" && group.Options?.length > 1
-              ? group.Options[0]
-              : null;
-
-          const control = new FormControl(defaultValue);
-          this.selectForm.addControl(group.Category, control);
-
-          if (defaultValue) {
-            this.filterService.setFilter(defaultValue);
-          }
-
-          this.subscription.add(
-            control.valueChanges.subscribe(
-              (selectedOption: FilterOption | null) => {
-                const currentGroup = groups.find(
-                  (g) => g.Category === group.Category
-                );
-                if (currentGroup) {
-                  currentGroup.Options.forEach((option) =>
-                    this.filterService.removeFilter(option)
-                  );
-                  if (selectedOption) {
-                    this.filterService.setFilter(selectedOption);
-                  }
-                }
-              }
-            )
-          );
-        }
-      });
+      const group = this.selectGroups()?.find((g) => g.Category === "AppType");
+      
+      if (!group || this.initializedDefaults.has("AppType"))
+        return;
+      
+      this.filterService.setFilter(group.Options[0]);
+      this.initializedDefaults.add("AppType");
     });
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+  // Computed signal to get the currently selected option for each group
+  selectedOptions = computed(() => {
+    const groups = this.selectGroups();
+    const currentFilters = this.filterService.selectedFilters();
+
+    const selections: Record<string, FilterOption | null> = {};
+
+    groups.forEach((group) => {
+      const selectedInGroup = currentFilters.find((filter) =>
+        group.Options.some((opt) => opt.Id === filter.Id)
+      );
+      selections[group.Category] = selectedInGroup || null;
+    });
+
+    return selections;
+  });
+
+  // Handle select changes
+  onSelectionChange(
+    group: FilterCategoryGroup,
+    selectedOption: FilterOption | null
+  ) {
+    // Remove all options from this group
+    group.Options.forEach((option) => this.filterService.removeFilter(option));
+
+    // Add the selected option if any
+    if (selectedOption) {
+      this.filterService.setFilter(selectedOption);
+    }
+  }
+
+  // Get selected value for a specific group
+  getSelectedValue(category: string): FilterOption | null {
+    return this.selectedOptions()[category] || null;
   }
 
   compareOptions(option1: FilterOption, option2: FilterOption): boolean {

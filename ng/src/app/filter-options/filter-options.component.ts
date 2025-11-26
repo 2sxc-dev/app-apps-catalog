@@ -1,6 +1,6 @@
 import { Component, inject, computed } from "@angular/core";
 import { FilterCategoryGroup } from "./filter-options.interfaces";
-import { FilterOptionsService } from "./fiter-options.services";
+import { FilterOptionsService } from "./filter-options.services";
 import { FilterSelectsComponent } from "./filter-selects/filter-selects.component";
 import { FilterCheckboxesComponent } from "./filter-checkboxes/filter-checkboxes.component";
 import { MatExpansionModule } from "@angular/material/expansion";

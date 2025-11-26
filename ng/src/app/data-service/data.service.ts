@@ -1,4 +1,4 @@
-import { effect, Injectable, signal } from "@angular/core";
+import { computed, Injectable, signal } from "@angular/core";
 import {
   AppListItem,
   AppListItemTag,
@@ -8,9 +8,7 @@ import { httpResource } from "@angular/common/http";
 
 @Injectable({ providedIn: "root" })
 export class DataService {
-  public appListSig = signal<AppListItem[]>([]);
-  public tagListSig = signal<AppListItemTag[]>([]);
-
+  // HTTP resources
   private appsRes = httpResource<{
     Apps: AppListItem[];
     Tags: AppListItemTag[];
@@ -32,57 +30,53 @@ export class DataService {
     method: "GET",
   }));
 
-  constructor() {
-    this.loadAppsAndTagsSignal();
-  }
+  // Computed signals that derive from HTTP resources
+  public appListSig = computed<AppListItem[]>(() => {
+    const appsResult = this.appsRes.value();
+    const typesResult = this.appTypesRes.value();
 
-  private loadAppsAndTagsSignal() {
-    effect(() => {
-      const appsResult = this.appsRes.value();
-      const typesResult = this.appTypesRes.value();
+    if (!appsResult || !typesResult) return [];
 
-      if (!appsResult || !typesResult) return;
+    const Apps = appsResult.Apps ?? [];
+    const typeList = typesResult.Apps ?? [];
 
-      const Apps = appsResult.Apps ?? [];
-      const Tags = appsResult.Tags ?? [];
-      const typeList = typesResult.Apps ?? [];
+    const typeMap = new Map(typeList.map((t) => [String(t.Id), t]));
 
-      const typeMap = new Map(typeList.map((t) => [String(t.Id), t]));
+    return Apps.map((app) => {
+      const enrichedTypes = (app.AppType ?? []).map((at) => ({
+        ...(typeMap.get(String(at.Id)) ?? {}),
+        ...at,
+      }));
 
-      const processedApps = Apps.map((app) => {
-        const enrichedTypes = (app.AppType ?? []).map((at) => ({
-          ...(typeMap.get(String(at.Id)) ?? {}),
-          ...at,
-        }));
-
-        return {
-          ...app,
-          AppType: enrichedTypes,
-          Tags: [...(app.Tags ?? []), ...enrichedTypes],
-        };
-      });
-
-      const typeTagMap = new Map<string, AppListItemTag>();
-      processedApps.forEach((a) =>
-        (a.AppType || []).forEach((t) => {
-          const key = String(t.Id);
-          if (!typeTagMap.has(key)) {
-            typeTagMap.set(key, {
-              ...t,
-              Category: "AppType",
-            });
-          }
-        })
-      );
-
-      const allTags: AppListItemTag[] = [
-        ...Tags,
-        ...Array.from(typeTagMap.values()),
-      ];
-
-      // update signals
-      this.appListSig.set(processedApps);
-      this.tagListSig.set(allTags);
+      return {
+        ...app,
+        AppType: enrichedTypes,
+        Tags: [...(app.Tags ?? []), ...enrichedTypes],
+      };
     });
-  }
+  });
+
+  public tagListSig = computed<AppListItemTag[]>(() => {
+    const appsResult = this.appsRes.value();
+    const processedApps = this.appListSig();
+
+    if (!appsResult) return [];
+
+    const Tags = appsResult.Tags ?? [];
+
+    const typeTagMap = new Map<string, AppListItemTag>();
+    processedApps.forEach((a) =>
+      (a.AppType || []).forEach((t) => {
+        const key = String(t.Id);
+        if (!typeTagMap.has(key)) {
+          typeTagMap.set(key, {
+            ...t,
+            Category: "AppType",
+          });
+        }
+      })
+    );
+
+    return [...Tags, ...Array.from(typeTagMap.values())];
+  });
 }

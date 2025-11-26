@@ -1,33 +1,23 @@
-<form [formGroup]="selectForm" class="row">
-  @for (
-    selectGroup of selectGroups();
-    track selectGroup;
-  ) {
-    <div class="col-12 col-md-3">
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-label>
-          {{ titlePrefix() + " " + selectGroup?.Category }}
-        </mat-label>
-        <mat-select
-          [formControlName]="selectGroup?.Category"
-          [compareWith]="compareOptions"
-        >
-          <mat-option [value]="null">
-            Show all
-          </mat-option>
-          @for (
-            option of selectGroup?.Options;
-            track option;
-          ) {
-            <mat-option
-              [value]="option"
-              [disabled]="option?.Disabled"
-            >
-              {{ option?.Title }}
-            </mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-    </div>
+<div class="row">
+  @for ( selectGroup of selectGroups(); track selectGroup.Category; ) {
+  <div class="col-12 col-md-3">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>
+        {{ titlePrefix() + " " + selectGroup?.Category }}
+      </mat-label>
+      <mat-select
+        [value]="getSelectedValue(selectGroup.Category)"
+        [compareWith]="compareOptions"
+        (selectionChange)="onSelectionChange(selectGroup, $event.value)"
+      >
+        <mat-option [value]="null"> Show all </mat-option>
+        @for ( option of selectGroup?.Options; track option. Id; ) {
+        <mat-option [value]="option" [disabled]="option?.Disabled">
+          {{ option?.Title }}
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
   }
-</form>
+</div>
