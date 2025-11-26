@@ -88,7 +88,7 @@ export class FilterCheckboxesComponent {
     return groups.some((group) =>
       group.Options.some(
         (option) =>
-          !["all", "old"].includes(option.Title.toLowerCase()) &&
+          !["all"].includes(option.Title.toLowerCase()) &&
           this.isOptionSelected(option)
       )
     );
@@ -99,7 +99,7 @@ export class FilterCheckboxesComponent {
     const groups = this.processedGroups();
     groups.forEach((group) => {
       group.Options.forEach((option) => {
-        if (!["all", "old"].includes(option.Title.toLowerCase())) {
+        if (!["all"].includes(option.Title.toLowerCase())) {
           this.filterService.removeFilter(option);
         }
       });

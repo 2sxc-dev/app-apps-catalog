@@ -1,4 +1,4 @@
-import { computed, Injectable, signal } from "@angular/core";
+import { computed, effect, Injectable, signal } from "@angular/core";
 import { DataService } from "../data-service/data.service";
 import { FilterCategoryGroup, FilterOption } from "./filter-options.interfaces";
 import { CheckboxIds } from "./filter-options.enums";
@@ -10,10 +10,9 @@ export class FilterOptionsService {
   public selectedFilters = signal<FilterOption[]>([]);
 
   constructor(private dataService: DataService) {
-    // Set initial filters when tag list is available
-    const initFilters = computed(() => {
+    effect(() => {
       const tagList = this.dataService.tagListSig();
-      if (tagList.length === 0) return;
+      if (!tagList || tagList.length === 0) return;
 
       const selectOnInit = [CheckboxIds.old];
       const initialFilters: FilterOption[] = [];
@@ -31,9 +30,6 @@ export class FilterOptionsService {
         this.selectedFilters.set(initialFilters);
       }
     });
-
-    // Trigger the initialization (read the computed to activate it)
-    initFilters();
   }
 
   // Computed signal for filtered app list
