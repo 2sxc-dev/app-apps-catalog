@@ -9,7 +9,6 @@ import { MatCardModule } from "@angular/material/card";
 @Component({
   selector: "app-list",
   templateUrl: "./app-list.component.html",
-  styleUrls: ["./app-list.component.scss"],
   imports: [MatCardModule, AppListItemComponent],
 })
 export class AppListComponent {

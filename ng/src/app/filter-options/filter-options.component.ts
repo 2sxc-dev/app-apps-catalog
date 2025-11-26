@@ -8,7 +8,6 @@ import { MatExpansionModule } from "@angular/material/expansion";
 @Component({
   selector: "app-filter-options",
   templateUrl: "./filter-options.component.html",
-  styleUrls: ["./filter-options.component.scss"],
   imports: [
     MatExpansionModule,
     FilterCheckboxesComponent,
