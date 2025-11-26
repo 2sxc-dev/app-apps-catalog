@@ -31,7 +31,7 @@ import { JsonPipe } from "@angular/common";
 export class FilterCheckboxesComponent implements OnDestroy {
   filterService = inject(FilterOptionsService);
 
-  checkboxGroupsSig = input.required<FilterCategoryGroup[]>();
+  checkboxGroups = input.required<FilterCategoryGroup[]>();
 
   // FormGroup controlling the checkboxes
   public checkboxForm: FormGroup = new FormGroup({});
@@ -40,10 +40,8 @@ export class FilterCheckboxesComponent implements OnDestroy {
   constructor() {
     // Effekt reagiert automatisch auf Änderungen von checkboxGroupsSig
     effect(() => {
-      const groups = this.checkboxGroupsSig();
+      const groups = this.checkboxGroups();
       if (!groups || groups.length === 0) return;
-
-      console.log("Checkbox Groups Signal updated:", groups);
 
       // Transformationen: Reihenfolge, Tags, Tooltips
       groups.forEach((group: FilterCategoryGroup) => {

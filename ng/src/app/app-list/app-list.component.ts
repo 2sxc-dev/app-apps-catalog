@@ -6,14 +6,14 @@ import { FilterOptionsService } from "../filter-options/fiter-options.services";
 import { AppTypeIds } from "./app-list.enums";
 import dayjs from "dayjs";
 import { AppListItemComponent } from "./app-list-item/app-list-item.component";
-import { NgClass, AsyncPipe } from "@angular/common";
+import { AsyncPipe } from "@angular/common";
 import { MatCardModule } from "@angular/material/card";
 
 @Component({
   selector: "app-list",
   templateUrl: "./app-list.component.html",
   styleUrls: ["./app-list.component.scss"],
-  imports: [MatCardModule, AppListItemComponent, NgClass, AsyncPipe],
+  imports: [MatCardModule, AppListItemComponent, AsyncPipe],
 })
 export class AppListComponent implements OnInit {
   // Observable to store the main of apps

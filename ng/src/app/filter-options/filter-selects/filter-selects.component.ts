@@ -31,16 +31,16 @@ export class FilterSelectsComponent implements OnDestroy {
   filterService = inject(FilterOptionsService);
 
   // Signal für synchronen Input
-  selectGroupsSig = input.required<FilterCategoryGroup[]>();
+  selectGroups = input.required<FilterCategoryGroup[]>();
   titlePrefix = input<string>("");
 
   public selectForm: FormGroup = new FormGroup({});
   private subscription = new Subscription();
 
   constructor() {
-    // Effekt reagiert automatisch auf Änderungen von selectGroupsSig
+    // Effekt reagiert automatisch auf Änderungen von selectGroups
     effect(() => {
-      const groups = this.selectGroupsSig();
+      const groups = this.selectGroups();
 
       if (!groups || groups.length === 0) return;
 

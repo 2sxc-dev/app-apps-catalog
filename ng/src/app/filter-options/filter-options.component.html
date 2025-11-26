@@ -1,11 +1,11 @@
 <!-- Desktop -->
 <div class="d-none d-md-block mb-1">
   <app-filter-selects
-    [selectGroupsSig]="filterSelectsSig()"
+    [selectGroups]="filterSelectsSig()"
     [titlePrefix]="titlePrefix"
   ></app-filter-selects>
   <app-filter-checkboxes
-    [checkboxGroupsSig]="filterCheckboxesSig()"
+    [checkboxGroups]="filterCheckboxesSig()"
   ></app-filter-checkboxes>
 </div>
 
@@ -19,11 +19,11 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <app-filter-selects
-      [selectGroupsSig]="filterSelectsSig()"
+      [selectGroups]="filterSelectsSig()"
       [titlePrefix]="titlePrefix"
     ></app-filter-selects>
     <app-filter-checkboxes
-      [checkboxGroupsSig]="filterCheckboxesSig()"
+      [checkboxGroups]="filterCheckboxesSig()"
     ></app-filter-checkboxes>
   </mat-expansion-panel>
 </div>
