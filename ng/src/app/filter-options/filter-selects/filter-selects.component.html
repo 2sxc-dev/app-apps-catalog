@@ -1,24 +1,24 @@
 <form [formGroup]="selectForm" class="row">
   @for (
-    selectGroup of selectGroups$ | async;
+    selectGroup of selectGroupsSig();
     track selectGroup;
-    let first = $first;
-    let last = $last
   ) {
-    <div
-      class="col-12 col-md-3"
-      [ngClass]="{ firstOrLast: first || last }"
-    >
+    <div class="col-12 col-md-3">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>
-          {{ titlePrefix + " " + selectGroup?.Category }}
+          {{ titlePrefix() + " " + selectGroup?.Category }}
         </mat-label>
         <mat-select
           [formControlName]="selectGroup?.Category"
           [compareWith]="compareOptions"
         >
-          <mat-option [value]="null">Show all</mat-option>
-          @for (option of selectGroup?.Options; track option) {
+          <mat-option [value]="null">
+            Show all
+          </mat-option>
+          @for (
+            option of selectGroup?.Options;
+            track option;
+          ) {
             <mat-option
               [value]="option"
               [disabled]="option?.Disabled"

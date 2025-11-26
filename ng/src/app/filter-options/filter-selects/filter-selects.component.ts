@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from "@angular/core";
+import { Component, OnInit, Input, OnDestroy, input, inject, effect } from "@angular/core";
 import { Observable, Subscription } from "rxjs";
 import {
   FilterCategoryGroup,
@@ -14,7 +14,6 @@ import { FilterOptionsService } from "../fiter-options.services";
 import { MatOptionModule } from "@angular/material/core";
 import { MatSelectModule } from "@angular/material/select";
 import { MatFormFieldModule } from "@angular/material/form-field";
-import { NgClass, AsyncPipe } from "@angular/common";
 
 @Component({
   selector: "app-filter-selects",
@@ -23,63 +22,63 @@ import { NgClass, AsyncPipe } from "@angular/common";
   imports: [
     FormsModule,
     ReactiveFormsModule,
-    NgClass,
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
-    AsyncPipe,
   ],
 })
-export class FilterSelectsComponent implements OnInit, OnDestroy {
-  @Input() titlePrefix: string = null;
-  @Input() selectGroups$: Observable<FilterCategoryGroup[]> = null;
+export class FilterSelectsComponent implements OnDestroy {
+  filterService = inject(FilterOptionsService);
+
+  // Signal für synchronen Input
+  selectGroupsSig = input.required<FilterCategoryGroup[]>();
+  titlePrefix = input<string>("");
 
   public selectForm: FormGroup = new FormGroup({});
-  private selectGroups: FilterCategoryGroup[] = [];
   private subscription = new Subscription();
 
-  constructor(private filterService: FilterOptionsService) {}
+  constructor() {
+    // Effekt reagiert automatisch auf Änderungen von selectGroupsSig
+    effect(() => {
+      const groups = this.selectGroupsSig();
 
-  ngOnInit() {
-    this.subscription.add(
-      this.selectGroups$.subscribe((groups: FilterCategoryGroup[]) => {
-        this.selectGroups = groups;
+      if (!groups || groups.length === 0) return;
 
-        groups.forEach((group: FilterCategoryGroup) => {
-          if (!this.selectForm.get(group.Category)) {
-            const defaultValue =
-              group.Category === "AppType" && group.Options?.length > 1
-                ? group.Options[0]
-                : null;
+      groups.forEach((group: FilterCategoryGroup) => {
+        // Control nur erstellen, wenn es noch nicht existiert
+        if (!this.selectForm.get(group.Category)) {
+          const defaultValue =
+            group.Category === "AppType" && group.Options?.length > 1
+              ? group.Options[0]
+              : null;
 
-            const control = new FormControl(defaultValue);
-            this.selectForm.addControl(group.Category, control);
+          const control = new FormControl(defaultValue);
+          this.selectForm.addControl(group.Category, control);
 
-            if (defaultValue) {
-              this.filterService.setFilter(defaultValue);
-            }
+          if (defaultValue) {
+            this.filterService.setFilter(defaultValue);
+          }
 
-            this.subscription.add(
-              control.valueChanges.subscribe(
-                (selectedOption: FilterOption | null) => {
-                  const currentGroup = this.selectGroups.find(
-                    (g) => g.Category === group.Category
+          this.subscription.add(
+            control.valueChanges.subscribe(
+              (selectedOption: FilterOption | null) => {
+                const currentGroup = groups.find(
+                  (g) => g.Category === group.Category
+                );
+                if (currentGroup) {
+                  currentGroup.Options.forEach((option) =>
+                    this.filterService.removeFilter(option)
                   );
-                  if (currentGroup) {
-                    currentGroup.Options.forEach((option) =>
-                      this.filterService.removeFilter(option)
-                    );
-                    if (selectedOption) {
-                      this.filterService.setFilter(selectedOption);
-                    }
+                  if (selectedOption) {
+                    this.filterService.setFilter(selectedOption);
                   }
                 }
-              )
-            );
-          }
-        });
-      })
-    );
+              }
+            )
+          );
+        }
+      });
+    });
   }
 
   ngOnDestroy() {
