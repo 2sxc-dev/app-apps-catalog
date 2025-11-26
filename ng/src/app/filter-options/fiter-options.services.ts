@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, signal } from "@angular/core";
 import { DataService } from "../data-service/data.service";
 import { FilterCategoryGroup, FilterOption } from "./filter-options.interfaces";
 import { Subject } from "rxjs";
@@ -18,11 +18,17 @@ export class FilterOptionsService {
     FilterCategoryGroup[]
   >();
 
+  // Signal variant for filter groups
+  public filterGroupsSig = signal<FilterCategoryGroup[]>([]);
+
   // Array to store the list of apps
   private appList: AppListItem[] = [];
 
   // Subject to emit filtered app list
   public appListFiltered: Subject<AppListItem[]> = new Subject<AppListItem[]>();
+
+  // Signal variant for filtered app list
+  public appListFilteredSig = signal<AppListItem[]>([]);
 
   constructor(private dataService: DataService) {
     // Initial selection of filters
@@ -40,6 +46,8 @@ export class FilterOptionsService {
       // Create filter groups and set initial filters
       const groups = this.createFilterGroups(tagList, this.appList);
       this.filterGroups.next(groups);
+      this.filterGroupsSig.set(groups);
+    
 
       selectOnInit.forEach((selectId) => {
         const select = this.tagList.find((tag) => tag.Id === selectId);
@@ -144,7 +152,9 @@ export class FilterOptionsService {
         : this.createFilterGroups(this.tagList, this.appList);
 
     this.filterGroups.next(filteredTags);
+    this.filterGroupsSig.set(filteredTags);
     this.appListFiltered.next(filteredApps);
+    this.appListFilteredSig.set(filteredApps);
   }
 
   // Function to create filter groups based on tag list and app list
@@ -211,7 +221,16 @@ export class FilterOptionsService {
 
   // Function to create a filter option
   private createFilterOption(tag: AppListItemTag, disabled: boolean = false) {
-    const { Id, Tag, Title, Category, Weight, Order, Teaser } = tag;
+    const {
+      Id,
+      Tag,
+      Title,
+      Category,
+      Weight,
+      Order,
+      Teaser
+    } = tag;
+
     let show = true;
 
     if (Id === CheckboxIds.old) {

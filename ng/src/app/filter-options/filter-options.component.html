@@ -1,7 +1,7 @@
 <!-- Desktop -->
 <div class="d-none d-md-block mb-1">
   <app-filter-selects
-    [selectGroups$]="filterSelects$"
+    [selectGroupsSig]="filterSelectsSig()"
     [titlePrefix]="titlePrefix"
   ></app-filter-selects>
   <app-filter-checkboxes
@@ -20,7 +20,7 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <app-filter-selects
-      [selectGroups$]="filterSelects$"
+      [selectGroupsSig]="filterSelectsSig()"
       [titlePrefix]="titlePrefix"
     ></app-filter-selects>
     <app-filter-checkboxes

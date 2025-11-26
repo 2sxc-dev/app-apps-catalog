@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, inject, OnInit, computed, effect } from "@angular/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { FilterCategoryGroup } from "./filter-options.interfaces";
@@ -18,18 +18,50 @@ import { MatExpansionModule } from "@angular/material/expansion";
   ],
 })
 export class FilterOptionsComponent implements OnInit {
+  filterService = inject(FilterOptionsService);
+
   // Define a title prefix for filter labels
-  public titlePrefix = "Filter by";
+  titlePrefix = "Filter by";
 
   // Observables for filter checkboxes and selects
   public filterCheckboxes$: Observable<FilterCategoryGroup[]> = null;
   public filterSelects$: Observable<FilterCategoryGroup[]> = null;
 
-  constructor(public filterService: FilterOptionsService) {}
+  // Use computed signals so they update automatically when service signals change
+  private checkboxCategories = ["Release-Type"];
+  private selectCategories = ["AppType", "Complexity", "Technology"];
+  private tagCategory = this.checkboxCategories.concat(this.selectCategories);
+
+  public filterCheckboxesSig = computed<FilterCategoryGroup[]>(() =>
+    (this.filterService.filterGroupsSig() || []).filter((group) =>
+      this.checkboxCategories.includes(group.Category)
+    )
+  );
+
+  public filterSelectsSig = computed<FilterCategoryGroup[]>(() => {
+    const groups = this.filterService.filterGroupsSig() || [];
+    const categorySelects = groups.filter((group) =>
+      this.selectCategories.includes(group.Category)
+    );
+
+    const tagSelects = groups
+      .filter((group) => !this.tagCategory.includes(group.Category))
+      .reduce(
+        (category, group) => {
+          category.Options = category.Options.concat(group.Options);
+          return category;
+        },
+        { Category: "Tag", Options: [] } as FilterCategoryGroup
+      );
+
+    return categorySelects.concat(tagSelects);
+  });
+
+  constructor() {}
 
   ngOnInit() {
     // Categories for checkbox filters
-    const checkboxCategories = ["Release-Type"];
+    const checkboxCategories = this.checkboxCategories;
 
     // Filter checkboxes based on specified categories
     this.filterCheckboxes$ = this.filterService.filterGroups.pipe(
@@ -39,8 +71,8 @@ export class FilterOptionsComponent implements OnInit {
     );
 
     // Categories for select filters
-    const selectCategories = ["AppType", "Complexity", "Technology"];
-    const tagCategory = checkboxCategories.concat(selectCategories);
+    const selectCategories = this.selectCategories;
+    const tagCategory = this.tagCategory;
 
     // Filter select filters based on specified categories
     this.filterSelects$ = this.filterService.filterGroups.pipe(
