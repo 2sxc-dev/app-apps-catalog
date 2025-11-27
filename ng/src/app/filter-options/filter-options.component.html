@@ -14,9 +14,11 @@
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title> Filters </mat-panel-title>
-      <mat-panel-description>
-        selected({{ filterService?.selectedFilters?.length || 0 }})
-      </mat-panel-description>
+      @if(filterService.selectedFilters()?.length > 0) {
+        <mat-panel-description>
+          selected {{ filterService?.selectedFilters()?.length || 0 }} filters
+        </mat-panel-description>
+      }
     </mat-expansion-panel-header>
     <app-filter-selects
       [selectGroups]="filterSelectsSig()"
