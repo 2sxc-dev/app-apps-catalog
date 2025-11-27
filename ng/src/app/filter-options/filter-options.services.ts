@@ -45,11 +45,12 @@ export class FilterOptionsService {
   // Computed signal for filter groups
   public filterGroupsSig = computed<FilterCategoryGroup[]>(() => {
     const tagList = this.dataService.tagListSig();
-    const filteredApps = this.appListFilteredSig();
     const appList = this.dataService.appListSig();
 
-    const appsToConsider = filteredApps.length > 0 ? filteredApps : appList;
-    return this.createFilterGroups(tagList, appsToConsider);
+    // Pass the full app list here. createFilterGroups will internally
+    // apply other-category filters when computing disabled status so that
+    // "own dropdown" doesn't affect availability detection.
+    return this.createFilterGroups(tagList, appList);
   });
 
   // Function to filter the app list based on selected filters
@@ -142,12 +143,27 @@ export class FilterOptionsService {
     tagList: Array<AppListItemTag>,
     appList: AppListItem[]
   ): FilterCategoryGroup[] {
+    const currentSelectedFilters = this.selectedFilters();
+
     const options = tagList.map((tag: AppListItemTag) => {
-      const disabled = !appList.some(
+      // Build the set of filters to consider for availability: exclude filters
+      // coming from the same category as the tag (i.e., ignore "own dropdown")
+      const effectiveFilters = currentSelectedFilters.filter(
+        (f) => f.Category !== tag.Category
+      );
+
+      // Compute the apps that would remain when applying the effective filters
+      const consideredApps =
+        effectiveFilters.length > 0
+          ? this.filterAppList(appList, effectiveFilters)
+          : appList;
+
+      const disabled = !consideredApps.some(
         (app) =>
           !!(app.Tags || []).find((appTag) => tag.Id === appTag.Id) ||
           !!(app.AppType || []).find((appTag) => tag.Id === appTag.Id)
       );
+
       return this.createFilterOption(tag, disabled);
     });
 
