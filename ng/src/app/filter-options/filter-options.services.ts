@@ -112,8 +112,8 @@ export class FilterOptionsService {
       const checkboxApps =
         checkboxFilters.length > 0
           ? onlyShowApps.filter((app) =>
-              appHasSomeFilters(app, checkboxFilters)
-            )
+            appHasSomeFilters(app, checkboxFilters)
+          )
           : onlyShowApps;
 
       // Include apps with no AppType if "Apps" filter is selected
@@ -213,6 +213,24 @@ export class FilterOptionsService {
     });
 
     return tempGroup;
+  }
+
+  public setSingleSelectFilter(
+    group: FilterCategoryGroup,
+    selectedOption: FilterOption | null): void {
+    const currentFilters = this.selectedFilters();
+
+    // Remove filters from the same category
+    const withoutGroup = currentFilters.filter(
+      (filter) => filter.Category !== group.Category
+    );
+
+    // Add the selected option if there is one
+    if (selectedOption) {
+      withoutGroup.push(selectedOption);
+    }
+
+    this.selectedFilters.set(withoutGroup);
   }
 
   // Function to create a filter option
